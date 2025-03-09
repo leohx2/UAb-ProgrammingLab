@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/leonardorosendosilva/Desktop/FaculdadeUAB/Ano letivo /1º ano/2º Semestre/Laboratório de Programação/Projetos Lab/UAb-ProgrammingLab/Atividade Formativa 1",
+      "program": "/Users/leonardorosendosilva/Desktop/FaculdadeUAB/Ano letivo /1º ano/2º Semestre/Laboratório de Programação/Projetos Lab/UAb-ProgrammingLab/Atividade Formativa 1/build/Debug/outDebug"
+    }
+  ]
+}
