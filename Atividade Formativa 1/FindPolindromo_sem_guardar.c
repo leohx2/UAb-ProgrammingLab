@@ -46,7 +46,7 @@ int FindPalindromos(char *s)
     return 0;
 }
 
-int LocalizaDaFraseOuIndevido(char c)
+int LocalizaFimDaFraseOuIndevido(char c)
 {
   int i;
   char s[7] = "\n\t ,.;";
@@ -67,11 +67,11 @@ int SeparaPorPalavras(char *str, char *aux)
 
   while (str[i])
   {
-    if (LocalizaDaFraseOuIndevido(str[i]) == 0)
+    if (LocalizaFimDaFraseOuIndevido(str[i]) == 0)
       aux[j++] = str[i];
 
     i++;
-    if (LocalizaDaFraseOuIndevido(str[i]) == 1)
+    if (LocalizaFimDaFraseOuIndevido(str[i]) == 1)
     {
       aux[j] = '\0';
       return 1;

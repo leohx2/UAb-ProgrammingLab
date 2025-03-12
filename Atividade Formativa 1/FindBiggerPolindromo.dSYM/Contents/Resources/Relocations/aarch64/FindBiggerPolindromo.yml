@@ -1,0 +1,10 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     "/Users/leonardorosendosilva/Desktop/FaculdadeUAB/Ano letivo /1º ano/2º Semestre/Laboratório de Programação/Projetos Lab/UAb-ProgrammingLab/Atividade Formativa 1/FindBiggerPolindromo"
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _IsAPalindromo, symObjAddr: 0x0, symBinAddr: 0x100003884, symSize: 0x1A0 }
+  - { offsetInCU: 0x42, offset: 0x42, size: 0x8, addend: 0x0, symName: _IsAPalindromo, symObjAddr: 0x0, symBinAddr: 0x100003884, symSize: 0x1A0 }
+  - { offsetInCU: 0x94, offset: 0x94, size: 0x8, addend: 0x0, symName: _PrintfComLimite, symObjAddr: 0x1A0, symBinAddr: 0x100003A24, symSize: 0x94 }
+  - { offsetInCU: 0xE2, offset: 0xE2, size: 0x8, addend: 0x0, symName: _FindPalindromos, symObjAddr: 0x234, symBinAddr: 0x100003AB8, symSize: 0x1DC }
+  - { offsetInCU: 0x134, offset: 0x134, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x410, symBinAddr: 0x100003C94, symSize: 0x1DC }
+...
