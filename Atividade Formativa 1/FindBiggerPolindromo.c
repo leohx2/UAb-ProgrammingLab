@@ -17,6 +17,7 @@ No output do seu programa, deverá apresentar a expressão como ela surge no tex
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -81,11 +82,15 @@ int FindPalindromos(char *s)
         // de final de frase ou fim da str, imprime.
         if (!isalnum(s[i - 1]) && !isalnum(s[str_size + 1]))
         {
-          PrintfComLimite(s, i, str_size - i);
+          // Esse if ao como último parametro decido se deve imprimir ou não o último caracter da str.
+          PrintfComLimite(s, i, (s[str_size + 1] == '\n' ? str_size - i : str_size - i + 1));
           counter++;
         }
         // Atualiza a string s, para que seja possível verificar palíndromos a frente daquele que encontrou na mesma linha
-        s += i + str_size;
+        s += str_size + 1;
+
+        while (*s && !isalnum(*s))
+          s++;
         // Atualiza o tamanho da str e o contador.
         str_size = strlen(s);
         i = 0;
@@ -107,8 +112,9 @@ int FindPalindromos(char *s)
 
 int main(int argc, char **argv)
 {
-  char str[MAXSTR];
-  int qtd_palindromos = 0, i;
+  char str[MAXSTR], *str_total;
+  int qtd_palindromos = 0;
+  long int f_size;
   FILE *f;
 
   if (argc != 2)
@@ -124,21 +130,30 @@ int main(int argc, char **argv)
     return 0;
   }
 
+  // Recebe o tamanho total do ficheiro para que consiga alocar, de maneira dinâmica, o tamanho total da string necessária
+  // para analisar todo o ficheiro de uma só vez, para saber se estou a lidar com um única palíndromo.
+  fseek(f, 0, SEEK_END);
+  f_size = ftell(f);
+  fseek(f, 0, SEEK_SET);
+
+  str_total = (char *)malloc(sizeof(char) * f_size);
+  if (str_total == NULL)
+  {
+    printf("Erro ao alocar memória\n");
+    return 0;
+  }
+
   // Caso tenha chegado até aqui é pq o ficheiro existe e foi encontrado
   // Faço agora um loop de leitura do ficheiro em busca de palíndromos.
+  printf("----------------------Resultado----------------------\n");
   while (!feof(f))
   {
     fgets(str, MAXSTR, f);
-
-    // remove o quebra linha do final da string, que só está presente nas str anteriores à última
-    if (str[strlen(str) - 1] == '\n')
-      str[strlen(str) - 1] = '\0';
-
-    qtd_palindromos += FindPalindromos(str);
-    // limpa str
-    for (i = 0; i < MAXSTR; i++)
-      str[i] = 0;
+    strcat(str_total, str);
   }
+
+  qtd_palindromos += FindPalindromos(str_total);
+  printf("-----------------------------------------------------\n");
 
   if (qtd_palindromos < 1)
     printf("Não foram encontrados palíndromos no ficheiro '%s'\n", argv[1]);
@@ -147,5 +162,6 @@ int main(int argc, char **argv)
   else if (qtd_palindromos > 1)
     printf("Ao todo foram encontrados %d palíndromos\n", qtd_palindromos);
 
+  free(str_total);
   fclose(f);
 }
