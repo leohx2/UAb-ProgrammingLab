@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "../header/listas.h"
 
+void Edit_menu(LCatalog *l_catalog);
+
 void Initial_menu(LCatalog *l_catalog)
 {
   int user_choice = -1;
@@ -9,7 +11,7 @@ void Initial_menu(LCatalog *l_catalog)
 
   while (user_choice != 0)
   {
-    printf("\nPlease choose one of the options bellow\n1 - Show all title.\n2 - Add a new title.\n3 - Remove a title.\n4 - Edit a title.\n0 - Exit\n");
+    printf("\nPlease choose one of the options bellow\n1 - Show all titles.\n2 - Add a new title.\n3 - Remove a title.\n4 - Edit a title.\n0 - Exit\n");
     printf("Option: ");
     scanf("%d", &user_choice);
 
@@ -22,7 +24,7 @@ void Initial_menu(LCatalog *l_catalog)
     }
     case 1:
     {
-      printf("\nHere's a list of all title we have:\n");
+      printf("\nHere's a list of all the titles we have:\n");
       Print_catalog(l_catalog);
       break;
     }
@@ -38,7 +40,8 @@ void Initial_menu(LCatalog *l_catalog)
     }
     case 4:
     {
-      // TODO edit a movie;
+      // TODO save in the CSV file;
+      Edit_menu(l_catalog);
       break;
     }
     default:
@@ -48,4 +51,27 @@ void Initial_menu(LCatalog *l_catalog)
     }
     }
   }
+}
+
+/*
+1 - to edit title
+2 - Category
+3 - duration
+4 - PEGI
+5 - views
+6 - Everything
+*/
+void Edit_menu(LCatalog *l_catalog)
+{
+  int id, edit_option;
+
+  printf("\nMovie ID to edit: ");
+  scanf("%d", &id);
+  printf("\nPlease, choose one of the options bellow to edit\n");
+  printf("1 - Title\n2 - Category\n3 - Duration\n4 - PEGI\n5 - Views\n6 - Everything\nOption: ");
+  scanf("%d", &edit_option);
+  if (edit_option > 6 || edit_option < 1)
+    printf("Invalid option\n");
+  if (Edit_item(l_catalog, edit_option, id) == 0)
+    printf("ID not found\n");
 }

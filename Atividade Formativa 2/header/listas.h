@@ -17,5 +17,6 @@ LCatalog *Add_new(LCatalog *list, LCatalog *aux);
 LCatalog *Free_current_list(LCatalog *list);
 LCatalog *Free_all_lists(LCatalog *list);
 void Print_catalog(LCatalog *list);
+int Edit_item(LCatalog *l_catalog, int content_to_edit, int id);
 
 #endif
