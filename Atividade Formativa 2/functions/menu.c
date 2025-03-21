@@ -1,17 +1,17 @@
 #include <stdio.h>
-#include "../header/listas.h"
+#include "../header/catalog.h"
 
 void Edit_menu(LCatalog *l_catalog);
 
-void Initial_menu(LCatalog *l_catalog)
+LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name)
 {
-  int user_choice = -1;
+  int user_choice = -1, id;
 
   printf("\n____________Welcome to Streamflix!____________");
 
   while (user_choice != 0)
   {
-    printf("\nPlease choose one of the options bellow\n1 - Show all titles.\n2 - Add a new title.\n3 - Remove a title.\n4 - Edit a title.\n0 - Exit\n");
+    printf("\nPlease choose one of the options below\n1 - Show all titles.\n2 - Add a new title.\n3 - Remove a title.\n4 - Edit a title.\n5 - Save.\n0 - Exit.\n");
     printf("Option: ");
     scanf("%d", &user_choice);
 
@@ -30,18 +30,25 @@ void Initial_menu(LCatalog *l_catalog)
     }
     case 2:
     {
-      // TODO add a new movie;
+      l_catalog = User_add_new_title(l_catalog);
       break;
     }
     case 3:
     {
-      // TODO remove a movie;
+      printf("\nID to remove: ");
+      scanf("%d", &id);
+      l_catalog = User_remove_title(l_catalog, id);
       break;
     }
     case 4:
     {
-      // TODO save in the CSV file;
       Edit_menu(l_catalog);
+      break;
+    }
+    case 5:
+    {
+      f = Save_Catalog(l_catalog, f, file_name);
+      printf("\n Changes saved!\n");
       break;
     }
     default:
@@ -51,25 +58,20 @@ void Initial_menu(LCatalog *l_catalog)
     }
     }
   }
+  return l_catalog;
 }
 
-/*
-1 - to edit title
-2 - Category
-3 - duration
-4 - PEGI
-5 - views
-6 - Everything
-*/
 void Edit_menu(LCatalog *l_catalog)
 {
   int id, edit_option;
 
-  printf("\nMovie ID to edit: ");
+  printf("\nTitle ID to edit: ");
   scanf("%d", &id);
-  printf("\nPlease, choose one of the options bellow to edit\n");
-  printf("1 - Title\n2 - Category\n3 - Duration\n4 - PEGI\n5 - Views\n6 - Everything\nOption: ");
+  printf("\nPlease, choose one of the options below to edit\n");
+  printf("1 - Title.\n2 - Category.\n3 - Duration.\n4 - PEGI.\n5 - Views.\n6 - Everything.\n0 - Previous menu.\nOption: ");
   scanf("%d", &edit_option);
+  if (edit_option == 0)
+    return;
   if (edit_option > 6 || edit_option < 1)
     printf("Invalid option\n");
   if (Edit_item(l_catalog, edit_option, id) == 0)
