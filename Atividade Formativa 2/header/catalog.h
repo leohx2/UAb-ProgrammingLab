@@ -1,7 +1,8 @@
 #ifndef MYFUNCTIONS_H
 #define MYFUNCTIONS_H
-#include "listas.h"
 #include <stdio.h>
+#include "listas.h"
+#include "search.h"
 
 LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name);
 void Print_catalog(LCatalog *list);

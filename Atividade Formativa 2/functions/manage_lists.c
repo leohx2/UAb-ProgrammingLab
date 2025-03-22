@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../header/listas.h"
+#include "../header/helper.h"
 
 #define MAXSTR 255
 
@@ -88,9 +89,7 @@ void Print_catalog(LCatalog *list)
 {
   while (list)
   {
-    printf("\nMovie: %s\n", list->title);
-    printf("Category: %s, duration: %d, PEGI: %s, views: %d\n", list->category, list->duration, list->pegi, list->views);
-    printf("ID: %d\n", list->id);
+    Print_title_details(list);
     list = list->next;
   }
 }
