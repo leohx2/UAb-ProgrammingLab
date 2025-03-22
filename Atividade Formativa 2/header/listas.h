@@ -1,6 +1,6 @@
 #ifndef LISTA_H
 #define LISTA_H
-
+#include <stdio.h>
 typedef struct LCatalog
 {
   char *category;
@@ -16,6 +16,5 @@ LCatalog *Save_on_list(FILE *file, LCatalog *l_catalog);
 LCatalog *Add_new(LCatalog *list, LCatalog *aux);
 LCatalog *Free_current_list(LCatalog *list);
 LCatalog *Free_all_lists(LCatalog *list);
-void Print_catalog(LCatalog *list);
 
 #endif

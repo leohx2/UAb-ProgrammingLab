@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../header/listas.h"
+#include "../header/helper.h"
 
-LCatalog *Add_new(LCatalog *list, LCatalog *aux)
+#define MAXSTR 255
+
+LCatalog *Add_title(LCatalog *list, LCatalog *aux)
 {
   LCatalog *novo;
   static int id = 1;
@@ -12,9 +15,9 @@ LCatalog *Add_new(LCatalog *list, LCatalog *aux)
 
   if (novo != NULL)
   {
-    novo->category = (char *)malloc(sizeof(char) * strlen(aux->category));
-    novo->title = (char *)malloc(sizeof(char) * strlen(aux->title));
-    novo->pegi = (char *)malloc(sizeof(char) * strlen(aux->pegi));
+    novo->title = (char *)malloc(sizeof(char) * strlen(aux->title) + 1);
+    novo->category = (char *)malloc(sizeof(char) * strlen(aux->category) + 1);
+    novo->pegi = (char *)malloc(sizeof(char) * strlen(aux->pegi) + 1);
 
     if (novo->category == NULL || novo->title == NULL || novo->pegi == NULL)
     {
@@ -22,18 +25,38 @@ LCatalog *Add_new(LCatalog *list, LCatalog *aux)
       return NULL;
     }
 
-    strcpy(novo->category, aux->category);
     strcpy(novo->title, aux->title);
+    strcpy(novo->category, aux->category);
     strcpy(novo->pegi, aux->pegi);
     novo->duration = aux->duration;
     novo->views = aux->views;
     novo->next = list;
     novo->id = id++;
-
     return novo;
   }
 
   return list;
+}
+
+// Add in order
+LCatalog *Add_new(LCatalog *list, LCatalog *aux)
+{
+  LCatalog *hold_1st_p;
+
+  // 1st item to be added
+  if (list == NULL)
+  {
+    list = Add_title(list, aux);
+    return list;
+  }
+
+  hold_1st_p = list;
+
+  while (list && list->next)
+    list = list->next;
+
+  list->next = Add_title(list->next, aux);
+  return hold_1st_p;
 }
 
 LCatalog *Free_current_list(LCatalog *list)
@@ -43,6 +66,9 @@ LCatalog *Free_current_list(LCatalog *list)
   if (list)
   {
     aux = list->next;
+    free(list->category);
+    free(list->title);
+    free(list->pegi);
     free(list);
 
     return aux;
@@ -63,9 +89,7 @@ void Print_catalog(LCatalog *list)
 {
   while (list)
   {
-    printf("\nMovie: %s\n", list->title);
-    printf("Category: %s, duration: %d, PEGI: %s, views: %d\n", list->category, list->duration, list->pegi, list->views);
-    printf("ID: %d\n", list->id);
+    Print_title_details(list);
     list = list->next;
   }
 }
