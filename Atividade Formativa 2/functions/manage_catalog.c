@@ -18,10 +18,10 @@ LCatalog *Save_on_list(FILE *f, LCatalog *l_catalog)
     token = strtok(str, ",");
 
     /*
-    Every line has 4 different informations, title, category, duration, PEGI and views
-    Using a loop and a switch case we'll run trough all the line and all the CSV data and
-    parse to the right place, after every line we save it into the list.
-    The controler will control where to parse the current info.
+    Every line has 5 pieces of information: title, category, duration, PEGI, and views.
+    Using a loop and a switch case, we'll iterate through each line of the CSV data and
+    assign each value to the correct field. After processing each line, we save it into the list.
+    The controller variable determines where to assign the current piece of information.
     */
     while (token != NULL)
     {
@@ -76,7 +76,7 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
   {
     if (content_to_edit == 1 || content_to_edit == 6)
     {
-      printf("\nCurrent title: %s\nNew title (don't use commas): ", l_catalog->title);
+      printf("\nCurrent title: %s\nNew title (commas are not allowed): ", l_catalog->title);
       scanf(" %[^\n]", aux);
       if (l_catalog->title)
         free(l_catalog->title);
@@ -84,7 +84,7 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     }
     if (content_to_edit == 2 || content_to_edit == 6)
     {
-      printf("\nCurrent category: %s\nNew category (if it has more than 1 category, don't use commas use '\\' instead): ", l_catalog->category);
+      printf("\nCurrent category: %s\nNew category (if there is more than one category, use a backslash (\\) as a separator): ", l_catalog->category);
       scanf(" %[^\n]", aux);
       if (l_catalog->category)
         free(l_catalog->category);
@@ -92,10 +92,10 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     }
     if (content_to_edit == 3 || content_to_edit == 6)
     {
-      printf("\nCurrent duration %d\nNew duration (only numbers, greater than 0, allowed): ", l_catalog->duration);
+      printf("\nCurrent duration: %d\nNew duration (only positive numbers are allowed): ", l_catalog->duration);
       scanf("%d", &int_aux);
-      if (int_aux == 0)
-        printf("Format not suported, only numbers (greater than 0) allowed\n");
+      if (int_aux <= 0)
+        printf("Format not supported, only numbers (greater than 0) allowed\n");
       else
         l_catalog->duration = int_aux;
     }
@@ -109,7 +109,7 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     }
     if (content_to_edit == 5 || content_to_edit == 6)
     {
-      printf("\nCurrent number of views %d\nNew number of views: ", l_catalog->views);
+      printf("\nCurrent view count: %d\nNew view count: ", l_catalog->views);
       scanf("%d", &int_aux);
       l_catalog->views = atoi(aux);
     }
@@ -185,25 +185,25 @@ LCatalog *User_remove_title(LCatalog *l_catalog, int id)
     l_catalog = l_catalog->next;
   }
 
-  printf("Id not found\n");
+  printf("ID not found\n");
   return aux;
 }
 
-// File must be inicialized with writing permissions.
 FILE *Save_Catalog(LCatalog *l_catalog, FILE *f, char *fileName)
 {
+  // Close the file and reopen it with write permissions to clear its contents and rewrite the data.
   fclose(f);
   f = fopen(fileName, "w");
   if (f == NULL)
   {
-    printf("Error. The function Save_Catalog needs a file as a parameter.\n");
+    printf("Error: The Save_Catalog function requires a file as a parameter.\n");
     return f;
   }
 
   // Writing the 1st line of csv file.
   fprintf(f, "Title,Category,Duration (min),Age Rating,Views");
 
-  // Bellow we have all the remaining lines, following the pattern from the first line.
+  // Below we have all the remaining lines, following the pattern from the first line.
   while (l_catalog)
   {
     fprintf(f, "\n%s,%s,%d,%s,%d", l_catalog->title, l_catalog->category, l_catalog->duration, l_catalog->pegi, l_catalog->views);

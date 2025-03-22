@@ -4,8 +4,8 @@
 #include "../header/helper.h"
 #define MAXSTR 255
 
-// mode 1 == exactly match, 2 for similar
-// function used to find titles and categories.
+// mode 1: exact match, mode 2: similar
+// This function searches for titles or categories based on the specified mode.
 int Print_matchs(LCatalog *aux, char *user_input, char holder[MAXSTR], int mode, int title_or_category)
 {
   int counter = 0;
@@ -86,8 +86,8 @@ int Print_pegi_matchs(LCatalog *aux, int user_input, int mode)
   return counter;
 }
 
-// This function support the users inputs with numbers only and and number plus a signal
-// exemple: 13 or 13+, or even 13++++
+// This function supports user inputs with numbers only or numbers followed by a plus sign.
+// Example: 13, 13+, or even 13++++
 void Search_PEGI(LCatalog *l_catalog)
 {
   char user_input[10], holder[10], answer[10];
