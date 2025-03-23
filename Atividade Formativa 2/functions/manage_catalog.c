@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../header/catalog.h"
+#include "../header/helper.h"
 #define MAXSTR 255
 
 // Read all the CSV content and save it in their lists
@@ -50,9 +51,14 @@ LCatalog *Save_on_list(FILE *f, LCatalog *l_catalog)
         aux->pegi = token;
         break;
       }
-      default:
+      case 4:
       {
         aux->views = atoi(token);
+        break;
+      }
+      default:
+      {
+        aux->id = atoi(token);
         controler = 0;
         break;
       }
@@ -150,6 +156,7 @@ LCatalog *User_add_new_title(LCatalog *l_catalog)
   printf("Current number of views: ");
   scanf("%d", &aux->views);
 
+  aux->id = Get_bigger_id(l_catalog) + 1;
   l_catalog = Add_new(l_catalog, aux);
 
   aux = Free_current_list(aux);
@@ -206,7 +213,7 @@ FILE *Save_Catalog(LCatalog *l_catalog, FILE *f, char *fileName)
   // Below we have all the remaining lines, following the pattern from the first line.
   while (l_catalog)
   {
-    fprintf(f, "\n%s,%s,%d,%s,%d", l_catalog->title, l_catalog->category, l_catalog->duration, l_catalog->pegi, l_catalog->views);
+    fprintf(f, "\n%s,%s,%d,%s,%d,%d", l_catalog->title, l_catalog->category, l_catalog->duration, l_catalog->pegi, l_catalog->views, l_catalog->id);
     l_catalog = l_catalog->next;
   }
   fclose(f);

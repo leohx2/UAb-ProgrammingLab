@@ -22,3 +22,16 @@ void Print_title_details(LCatalog *l_catalog)
   printf("Category: %s, duration: %d, PEGI: %s, views: %d\n", l_catalog->category, l_catalog->duration, l_catalog->pegi, l_catalog->views);
   printf("ID: %d\n", l_catalog->id);
 }
+
+int Get_bigger_id(LCatalog *l_catalog)
+{
+  int bigger = 0;
+
+  while (l_catalog)
+  {
+    if (l_catalog->id > bigger)
+      bigger = l_catalog->id;
+    l_catalog = l_catalog->next;
+  }
+  return bigger;
+}

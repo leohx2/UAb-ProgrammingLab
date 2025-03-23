@@ -9,7 +9,6 @@
 LCatalog *Add_title(LCatalog *list, LCatalog *aux)
 {
   LCatalog *novo;
-  static int id = 1;
 
   novo = (LCatalog *)malloc(sizeof(LCatalog));
 
@@ -31,7 +30,7 @@ LCatalog *Add_title(LCatalog *list, LCatalog *aux)
     novo->duration = aux->duration;
     novo->views = aux->views;
     novo->next = list;
-    novo->id = id++;
+    novo->id = aux->id;
     return novo;
   }
 
@@ -92,4 +91,15 @@ void Print_catalog(LCatalog *list)
     Print_title_details(list);
     list = list->next;
   }
+}
+
+TUser *Free_user(TUser *t_user)
+{
+  if (t_user)
+  {
+    if (t_user->username)
+      free(t_user->username);
+    free(t_user);
+  }
+  return NULL;
 }

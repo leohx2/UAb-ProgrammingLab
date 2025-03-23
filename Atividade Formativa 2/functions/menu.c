@@ -9,8 +9,6 @@ LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name)
 {
   int user_choice = -1, id;
 
-  printf("\n____________Welcome to Streamflix!____________");
-
   while (user_choice != 0)
   {
     printf("\nPlease choose one of the options below\n1 - Show all titles.\n2 - Search.\n3 - Add a new title.\n4 - Remove a title.\n5 - Edit a title.\n6 - Save.\n0 - Exit.\n");
@@ -21,7 +19,7 @@ LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name)
     {
     case 0:
     {
-      printf("Thank you for using StreamFlix :)\n");
+      printf("\nThank you for using StreamFlix :)\n");
       break;
     }
     case 1:
