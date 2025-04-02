@@ -1,6 +1,7 @@
 #include "../header/helper.h"
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 
 void To_upper_str(char *s)
 {
@@ -34,4 +35,41 @@ int Get_bigger_id(LCatalog *l_catalog)
     l_catalog = l_catalog->next;
   }
   return bigger;
+}
+
+// Create a new user file
+void Create_new_csv(char *path, char *username)
+{
+  char *holder;
+  FILE *new_user;
+  holder = (char *)malloc(sizeof(char) * strlen(path) + strlen(username) + 4);
+  strcat(holder, path);
+  strcat(holder, username);
+  strcat(holder, ".csv");
+  new_user = fopen(holder, "w+");
+  fprintf(new_user, "Action('p'/'s'/'c' for pause/stream/conclusion),title_id");
+  fclose(new_user);
+  free(holder);
+}
+
+FILE *Open_interaction_csv(char *path, char *username)
+{
+  char *holder;
+  FILE *new_user;
+  holder = (char *)malloc(sizeof(char) * strlen(path) + strlen(username) + 4);
+  strcat(holder, path);
+  strcat(holder, username);
+  strcat(holder, ".csv");
+  new_user = fopen(holder, "r+");
+  free(holder);
+
+  return (new_user);
+}
+
+int Safe_answer()
+{
+  char *str;
+
+  scanf(" %[^\n]", str);
+  return atoi(str);
 }

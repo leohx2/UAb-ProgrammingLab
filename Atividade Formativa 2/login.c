@@ -27,9 +27,10 @@ TUser *Parse_user(int id, char *username)
 // mode: 'f' to login, 'c' to create
 TUser *Find_or_create_user(FILE *f_user, char *username, int mode)
 {
-  char s[MAXSTR], *token;
+  char s[MAXSTR], *token, *holder;
   int bigger_id = 0, user_id, choice;
   TUser *user;
+  FILE *newUser;
 
   // Ignore the fist line, that will tell us the file order, in that case "user_id,username"
   fgets(s, MAXSTR, f_user);
@@ -72,8 +73,9 @@ TUser *Find_or_create_user(FILE *f_user, char *username, int mode)
   }
   else if (mode == 'c')
   {
-    // Create a new user
+    // Create a new user and csv file for that user
     fprintf(f_user, "\n%d,%s", ++bigger_id, username);
+    Create_new_csv("./database csv/interaction_", username);
     user = Parse_user(bigger_id, username);
   }
   return user;
@@ -90,7 +92,7 @@ TUser *Login(FILE *f_user)
   {
     printf("\n------------- Please choose a option -------------\n");
     printf("\n1 - Login (no password required)\n2 - Create a new profile\nOption: ");
-    scanf("%d", &user_choice);
+    user_choice = Safe_answer();
     if (user_choice < 1 || user_choice > 2)
       printf("Invalid option");
   }

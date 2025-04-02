@@ -93,6 +93,7 @@ void Print_catalog(LCatalog *list)
   }
 }
 
+// USER
 TUser *Free_user(TUser *t_user)
 {
   if (t_user)
@@ -102,4 +103,52 @@ TUser *Free_user(TUser *t_user)
     free(t_user);
   }
   return NULL;
+}
+
+// INTERACTIONS
+LInteractions *New_interaction(LInteractions *l_interaction, char action, int movie_id)
+{
+  LInteractions *new;
+
+  new = (LInteractions *)malloc(sizeof(LInteractions));
+
+  if (new != NULL)
+  {
+    // add from the newest to the oldest
+    new->movie_id = movie_id;
+    new->action = action;
+    new->next = l_interaction;
+
+    return new;
+  }
+
+  return l_interaction;
+}
+
+LInteractions *Load_Interactions(FILE *f_interactions, TUser *t_user)
+{
+  LInteractions *l_interactions = NULL;
+  char str[MAXSTR], *token, action;
+  int movie_id;
+
+  // Ignore the files first line
+  fgets(str, MAXSTR, f_interactions);
+
+  // interaction.csv is splitted in two parts, action and title_id
+  while (!feof(f_interactions))
+  {
+    fgets(str, MAXSTR, f_interactions);
+    printf("%s\n", str);
+
+    // Get the action
+    token = strtok(str, ",");
+    action = token[0];
+
+    // Get the movie id;
+    token = strtok(NULL, ",");
+    movie_id = atoi(token);
+    l_interactions = New_interaction(l_interactions, action, movie_id);
+  }
+
+  return l_interactions;
 }

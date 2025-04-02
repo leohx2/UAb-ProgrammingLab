@@ -1,4 +1,6 @@
 #include "../header/catalog.h"
+#include "../header/helper.h"
+#include <stdlib.h>
 
 // The prototype functions bellow will be used here, and only in this file, that's why
 // it's not in the header file with the remaining functions.
@@ -9,48 +11,53 @@ LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name)
 {
   int user_choice = -1, id;
 
-  while (user_choice != 0)
+  while (user_choice != 10)
   {
-    printf("\nPlease choose one of the options below\n1 - Show all titles.\n2 - Search.\n3 - Add a new title.\n4 - Remove a title.\n5 - Edit a title.\n6 - Save.\n0 - Exit.\n");
+    printf("\nPlease choose one of the options below\n1 - Watch a movie\n2 - Show all titles.\n3 - Search.\n4 - Add a new title.\n5 - Remove a title.\n6 - Edit a title.\n7 - Save.\n10 - Exit.\n");
     printf("Option: ");
-    scanf("%d", &user_choice);
+    user_choice = Safe_answer();
 
     switch (user_choice)
     {
-    case 0:
+    case 10:
     {
       printf("\nThank you for using StreamFlix :)\n");
       break;
     }
     case 1:
     {
-      printf("\nHere's a list of all the titles we have:\n");
-      Print_catalog(l_catalog);
+      printf("TODO Watch a movie\n");
       break;
     }
     case 2:
     {
-      Search_menu(l_catalog);
+      printf("\nHere's a list of all the titles we have:\n");
+      Print_catalog(l_catalog);
       break;
     }
     case 3:
     {
-      l_catalog = User_add_new_title(l_catalog);
+      Search_menu(l_catalog);
       break;
     }
     case 4:
     {
-      printf("\nID to remove: ");
-      scanf("%d", &id);
-      l_catalog = User_remove_title(l_catalog, id);
+      l_catalog = User_add_new_title(l_catalog);
       break;
     }
     case 5:
     {
-      Edit_menu(l_catalog);
+      printf("\nID to remove: ");
+      id = Safe_answer();
+      l_catalog = User_remove_title(l_catalog, id);
       break;
     }
     case 6:
+    {
+      Edit_menu(l_catalog);
+      break;
+    }
+    case 7:
     {
       f = Save_Catalog(l_catalog, f, file_name);
       printf("\n Changes saved!\n");
@@ -71,11 +78,11 @@ void Edit_menu(LCatalog *l_catalog)
   int id, edit_option;
 
   printf("\nTitle ID to edit: ");
-  scanf("%d", &id);
+  id = Safe_answer();
   printf("\nPlease, choose one of the options below to edit\n");
   printf("1 - Title.\n2 - Category.\n3 - Duration.\n4 - PEGI.\n5 - Views.\n6 - Everything.\n0 - Previous menu.\n");
   printf("Option: ");
-  scanf("%d", &edit_option);
+  edit_option = Safe_answer();
   if (edit_option == 0)
     return;
   if (edit_option > 6 || edit_option < 1)
@@ -91,7 +98,7 @@ void Search_menu(LCatalog *l_catalog)
   printf("\nChoose one of the options bellow:\n");
   printf("Search by\n1 - Title\n2 - Category\n3 - Age Rating\n");
   printf("option:");
-  scanf("%d", &user_choice);
+  user_choice = Safe_answer();
 
   if (user_choice == 1 || user_choice == 2)
     Search_title_or_category(l_catalog, user_choice);

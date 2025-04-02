@@ -10,8 +10,9 @@
 
 int main()
 {
-  FILE *f, *f_user;
+  FILE *f, *f_user, *f_interactions;
   LCatalog *catalog;
+  LInteractions *l_interactions;
   TUser *t_user;
 
   catalog = NULL;
@@ -39,13 +40,23 @@ int main()
   fclose(f_user);
   printf("\n____________Welcome to Streamflix, %s!____________\n", t_user->username);
 
+  // Load the user interactions in the list
+  f_interactions = Open_interaction_csv("./database csv/interaction_", t_user->username);
+  if (f_interactions == NULL)
+  {
+    printf("Error, user database not found.\n");
+    fclose(f);
+  }
+
+  l_interactions = Load_Interactions(f_interactions, t_user);
+
   catalog = Initial_menu(catalog, f, FILENAME);
 
-  // Saving.
   f = Save_Catalog(catalog, f, FILENAME);
 
   catalog = Free_all_lists(catalog);
   t_user = Free_user(t_user);
 
   fclose(f);
+  fclose(f_interactions);
 }
