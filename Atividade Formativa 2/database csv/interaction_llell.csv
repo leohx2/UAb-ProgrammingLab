@@ -2,3 +2,5 @@ Action('p'/'s'/'c' for pause/stream/conclusion),title_id
 s,1
 p,1
 p,1
+r,1
+p,1

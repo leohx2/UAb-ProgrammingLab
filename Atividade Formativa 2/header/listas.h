@@ -18,6 +18,15 @@ typedef struct SInteractions
   char action; // Action('p'/'r'/'s'/'w' for pause/resume/stream/watched)
   struct SInteractions *next;
 } LInteractions;
+
+typedef struct SFavorite
+{
+  char *name;
+  char *movie_name;
+  int id;
+  int title_id;
+  struct SFavorite *next;
+} LFavorite;
 typedef struct
 {
   char *username;
@@ -40,5 +49,7 @@ TUser *Free_user(TUser *t_user);
 LInteractions *Load_Interactions(FILE *f_interactions);
 LInteractions *New_interaction(LInteractions *l_interaction, char action, int movie_id);
 LInteractions *Free_all_interactions(LInteractions *l_interactions);
+LFavorite *Add_favorite_in_order(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name);
+LFavorite *Free_all_favorites(LFavorite *l_favorites);
 
 #endif

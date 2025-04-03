@@ -15,6 +15,7 @@ int main()
   TFiles *t_files;
   LCatalog *l_catalog;
   LInteractions *l_interactions;
+  LFavorite *l_favorites;
   TUser *t_user;
 
   l_catalog = NULL;
@@ -59,18 +60,22 @@ int main()
     fclose(t_files->interactions);
   }
 
+  l_favorites = Load_favorites(t_files->favorites);
+
   l_interactions = Load_Interactions(t_files->interactions);
 
-  l_catalog = Initial_menu(l_catalog, l_interactions, FILENAME, t_files);
+  l_catalog = Initial_menu(l_catalog, l_interactions, l_favorites, FILENAME, t_files);
 
   t_files->movies = Save_Catalog(l_catalog, t_files->movies, FILENAME);
 
   l_catalog = Free_all_lists(l_catalog);
   t_user = Free_user(t_user);
   l_interactions = Free_all_interactions(l_interactions);
+  l_favorites = Free_all_favorites(l_favorites);
 
   fclose(t_files->movies);
   fclose(t_files->interactions);
   fclose(t_files->favorites);
+
   free(t_files);
 }

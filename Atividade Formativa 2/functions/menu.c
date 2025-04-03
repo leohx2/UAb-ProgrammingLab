@@ -7,7 +7,7 @@
 void Edit_menu(LCatalog *l_catalog);
 void Search_menu(LCatalog *l_catalog);
 
-LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, char *file_name, TFiles *t_files)
+LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavorite *l_favorite, char *file_name, TFiles *t_files)
 {
   int user_choice = 0, id;
 
@@ -66,12 +66,12 @@ LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, char 
     }
     case 8:
     {
-      printf("TODO... See my lists\n");
+      Show_all_favorites(l_favorite);
       break;
     }
     case 9:
     {
-      printf("TODO... Create a new list\n");
+      Create_new_favorite(l_favorite, t_files->favorites);
       break;
     }
     case 10:

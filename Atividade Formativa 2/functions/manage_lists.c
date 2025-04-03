@@ -138,3 +138,63 @@ LInteractions *Free_all_interactions(LInteractions *l_interactions)
 
   return l_interactions;
 }
+
+LFavorite *Add_new_favorite(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name)
+{
+  LFavorite *new;
+
+  new = (LFavorite *)malloc(sizeof(LFavorite));
+  if (new == NULL)
+  {
+    printf("Error memory allocation. Add_new_favorite.");
+    return l_favorite;
+  }
+  new->id = list_id;
+  new->title_id = title_id;
+  new->name = (char *)malloc(sizeof(char) * strlen(list_name) + 1);
+  strcpy(new->name, list_name);
+  new->movie_name = (char *)malloc(sizeof(char) * strlen(movie_name) + 1);
+  strcpy(new->movie_name, movie_name);
+  new->next = l_favorite;
+
+  return new;
+}
+
+// Add in order, from the oldest to the newest
+LFavorite *Add_favorite_in_order(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name)
+{
+  LFavorite *hold_1st_p;
+
+  // Check if there's no items
+  if (l_favorite == NULL)
+  {
+    l_favorite = Add_new_favorite(l_favorite, list_id, title_id, list_name, movie_name);
+    return l_favorite;
+  }
+
+  hold_1st_p = l_favorite;
+
+  while (l_favorite && l_favorite->next)
+    l_favorite = l_favorite->next;
+
+  l_favorite->next = Add_new_favorite(l_favorite->next, list_id, title_id, list_name, movie_name);
+  return hold_1st_p;
+}
+
+LFavorite *Free_all_favorites(LFavorite *l_favorites)
+{
+  LFavorite *aux;
+
+  while (l_favorites)
+  {
+    aux = l_favorites->next;
+    if (l_favorites->name)
+      free(l_favorites->name);
+    if (l_favorites->movie_name)
+      free(l_favorites->movie_name);
+    free(l_favorites);
+
+    l_favorites = aux;
+  }
+  return l_favorites;
+}

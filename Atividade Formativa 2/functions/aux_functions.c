@@ -50,7 +50,7 @@ void Create_new_csv(char *path, char *username, int mode)
   if (mode == 1)
     fprintf(new_user, "Action('p'/'s'/'c' for pause/stream/conclusion),title_id");
   else if (mode == 2)
-    fprintf(new_user, "List name, list ID, title ID\nWatch Later, 1, 0");
+    fprintf(new_user, "list ID, title ID, List name, Title name\n1,0,Watch Later,Title name");
   fclose(new_user);
   free(holder);
 }
