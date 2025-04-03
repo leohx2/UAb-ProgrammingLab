@@ -54,13 +54,13 @@ TUser *Find_or_create_user(FILE *f_user, char *username, int mode)
       // If we're using the creation mode, we don't want a user that already exist.
       if (mode == 'c')
       {
-        printf("User Already exist\n");
+        printf("\nUser Already exist.\n");
         rewind(f_user);
         return Login(f_user);
       }
       user = Parse_user(user_id, username);
       if (user == NULL)
-        printf("Error. Memory allocation, Find_user\n");
+        printf("Error. Memory allocation, Find_user.\n");
       return user;
     }
   }
@@ -75,7 +75,8 @@ TUser *Find_or_create_user(FILE *f_user, char *username, int mode)
   {
     // Create a new user and csv file for that user
     fprintf(f_user, "\n%d,%s", ++bigger_id, username);
-    Create_new_csv("./database csv/interaction_", username);
+    Create_new_csv("./database csv/interaction_", username, 1);
+    Create_new_csv("./database csv/lists_", username, 2);
     user = Parse_user(bigger_id, username);
   }
   return user;

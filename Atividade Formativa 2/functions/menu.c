@@ -7,26 +7,27 @@
 void Edit_menu(LCatalog *l_catalog);
 void Search_menu(LCatalog *l_catalog);
 
-LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name)
+LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, char *file_name, TFiles *t_files)
 {
-  int user_choice = -1, id;
+  int user_choice = 0, id;
 
-  while (user_choice != 10)
+  while (user_choice != -1)
   {
-    printf("\nPlease choose one of the options below\n1 - Watch a movie\n2 - Show all titles.\n3 - Search.\n4 - Add a new title.\n5 - Remove a title.\n6 - Edit a title.\n7 - Save.\n10 - Exit.\n");
+    printf("\nPlease choose one of the options below\n 1 - Choose a title\n 2 - Show all titles.\n 3 - Search.\n 4 - Add a new title.");
+    printf("\n 5 - Remove a title.\n 6 - Edit a title.\n 7 - Save.\n 8 - See my lists\n 9 - Create a new list\n10 - StreamFlix recommendation\n-1 - Exit.\n");
     printf("Option: ");
     user_choice = Safe_answer();
 
     switch (user_choice)
     {
-    case 10:
+    case -1:
     {
       printf("\nThank you for using StreamFlix :)\n");
       break;
     }
     case 1:
     {
-      printf("TODO Watch a movie\n");
+      l_interactions = Watch_a_movie(l_interactions, l_catalog, t_files->interactions);
       break;
     }
     case 2:
@@ -59,15 +60,27 @@ LCatalog *Initial_menu(LCatalog *l_catalog, FILE *f, char *file_name)
     }
     case 7:
     {
-      f = Save_Catalog(l_catalog, f, file_name);
+      t_files->movies = Save_Catalog(l_catalog, t_files->movies, file_name);
       printf("\n Changes saved!\n");
       break;
     }
-    default:
+    case 8:
     {
-      printf("Invalid option\n");
+      printf("TODO... See my lists\n");
       break;
     }
+    case 9:
+    {
+      printf("TODO... Create a new list\n");
+      break;
+    }
+    case 10:
+    {
+      printf("TODO... Recommendation\n");
+      break;
+    }
+    default:
+      printf("Invalid option\n");
     }
   }
   return l_catalog;

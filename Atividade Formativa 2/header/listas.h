@@ -15,7 +15,7 @@ typedef struct SCatalog
 typedef struct SInteractions
 {
   int movie_id;
-  char action;
+  char action; // Action('p'/'r'/'s'/'w' for pause/resume/stream/watched)
   struct SInteractions *next;
 } LInteractions;
 typedef struct
@@ -24,11 +24,21 @@ typedef struct
   int id;
 } TUser;
 
+typedef struct
+{
+  FILE *interactions;
+  FILE *favorites;
+  FILE *movies;
+
+} TFiles;
+
 LCatalog *Save_on_list(FILE *file, LCatalog *l_catalog);
 LCatalog *Add_new(LCatalog *list, LCatalog *aux);
 LCatalog *Free_current_list(LCatalog *list);
 LCatalog *Free_all_lists(LCatalog *list);
 TUser *Free_user(TUser *t_user);
-LInteractions *Load_Interactions(FILE *f_interactions, TUser *t_user);
+LInteractions *Load_Interactions(FILE *f_interactions);
+LInteractions *New_interaction(LInteractions *l_interaction, char action, int movie_id);
+LInteractions *Free_all_interactions(LInteractions *l_interactions);
 
 #endif

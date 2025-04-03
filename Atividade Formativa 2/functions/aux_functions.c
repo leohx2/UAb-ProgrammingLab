@@ -37,8 +37,8 @@ int Get_bigger_id(LCatalog *l_catalog)
   return bigger;
 }
 
-// Create a new user file
-void Create_new_csv(char *path, char *username)
+// Create a new user file. mode: 1 for interactions, 2 for lists
+void Create_new_csv(char *path, char *username, int mode)
 {
   char *holder;
   FILE *new_user;
@@ -47,7 +47,10 @@ void Create_new_csv(char *path, char *username)
   strcat(holder, username);
   strcat(holder, ".csv");
   new_user = fopen(holder, "w+");
-  fprintf(new_user, "Action('p'/'s'/'c' for pause/stream/conclusion),title_id");
+  if (mode == 1)
+    fprintf(new_user, "Action('p'/'s'/'c' for pause/stream/conclusion),title_id");
+  else if (mode == 2)
+    fprintf(new_user, "List name, list ID, title ID\nWatch Later, 1, 0");
   fclose(new_user);
   free(holder);
 }

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 // Include the lists to use and it functions as well during the program.
 #include "header/listas.h"
 // Include the auxiliar functions to use in main
@@ -10,20 +11,22 @@
 
 int main()
 {
-  FILE *f, *f_user, *f_interactions;
-  LCatalog *catalog;
+  FILE *f_user;
+  TFiles *t_files;
+  LCatalog *l_catalog;
   LInteractions *l_interactions;
   TUser *t_user;
 
-  catalog = NULL;
+  l_catalog = NULL;
   f_user = NULL;
+  t_files = (TFiles *)malloc(sizeof(TFiles));
 
   // To work properly, the CSV file must have the follwing sintax:
   // Title, Category, Duration (min), Recommended classification age, View.
-  f = fopen("movies_data.csv", "r");
+  t_files->movies = fopen("movies_data.csv", "r");
   f_user = fopen("./database csv/user.csv", "r+");
 
-  if (f == NULL)
+  if (t_files->movies == NULL)
   {
     printf("Error. File 'movies_data.csv' not found.\n");
     return 0;
@@ -34,29 +37,40 @@ int main()
     return 0;
   }
 
-  catalog = Save_on_list(f, catalog);
+  l_catalog = Save_on_list(t_files->movies, l_catalog);
 
   t_user = Login(f_user);
   fclose(f_user);
   printf("\n____________Welcome to Streamflix, %s!____________\n", t_user->username);
 
   // Load the user interactions in the list
-  f_interactions = Open_interaction_csv("./database csv/interaction_", t_user->username);
-  if (f_interactions == NULL)
+  t_files->interactions = Open_interaction_csv("./database csv/interaction_", t_user->username);
+  if (t_files->interactions == NULL)
   {
     printf("Error, user database not found.\n");
-    fclose(f);
+    fclose(t_files->movies);
   }
 
-  l_interactions = Load_Interactions(f_interactions, t_user);
+  t_files->favorites = Open_interaction_csv("./database csv/lists_", t_user->username);
+  if (t_files->favorites == NULL)
+  {
+    printf("Error, user database not found.\n");
+    fclose(t_files->movies);
+    fclose(t_files->interactions);
+  }
 
-  catalog = Initial_menu(catalog, f, FILENAME);
+  l_interactions = Load_Interactions(t_files->interactions);
 
-  f = Save_Catalog(catalog, f, FILENAME);
+  l_catalog = Initial_menu(l_catalog, l_interactions, FILENAME, t_files);
 
-  catalog = Free_all_lists(catalog);
+  t_files->movies = Save_Catalog(l_catalog, t_files->movies, FILENAME);
+
+  l_catalog = Free_all_lists(l_catalog);
   t_user = Free_user(t_user);
+  l_interactions = Free_all_interactions(l_interactions);
 
-  fclose(f);
-  fclose(f_interactions);
+  fclose(t_files->movies);
+  fclose(t_files->interactions);
+  fclose(t_files->favorites);
+  free(t_files);
 }

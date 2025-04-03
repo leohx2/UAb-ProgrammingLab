@@ -125,29 +125,15 @@ LInteractions *New_interaction(LInteractions *l_interaction, char action, int mo
   return l_interaction;
 }
 
-LInteractions *Load_Interactions(FILE *f_interactions, TUser *t_user)
+LInteractions *Free_all_interactions(LInteractions *l_interactions)
 {
-  LInteractions *l_interactions = NULL;
-  char str[MAXSTR], *token, action;
-  int movie_id;
+  LInteractions *aux;
 
-  // Ignore the files first line
-  fgets(str, MAXSTR, f_interactions);
-
-  // interaction.csv is splitted in two parts, action and title_id
-  while (!feof(f_interactions))
+  while (l_interactions)
   {
-    fgets(str, MAXSTR, f_interactions);
-    printf("%s\n", str);
-
-    // Get the action
-    token = strtok(str, ",");
-    action = token[0];
-
-    // Get the movie id;
-    token = strtok(NULL, ",");
-    movie_id = atoi(token);
-    l_interactions = New_interaction(l_interactions, action, movie_id);
+    aux = l_interactions->next;
+    free(l_interactions);
+    l_interactions = aux;
   }
 
   return l_interactions;
