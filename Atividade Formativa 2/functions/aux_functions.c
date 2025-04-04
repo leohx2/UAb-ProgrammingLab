@@ -48,7 +48,7 @@ void Create_new_csv(char *path, char *username, int mode)
   strcat(holder, ".csv");
   new_user = fopen(holder, "w+");
   if (mode == 1)
-    fprintf(new_user, "Action('p'/'s'/'c' for pause/stream/conclusion),title_id");
+    fprintf(new_user, "Action('p'/'s'/'w'/'r'/'A'/'R' for pause/stream/watched/resume/Add to playlist/Remove from playlist),title_id");
   else if (mode == 2)
     fprintf(new_user, "list ID, title ID, List name, Title name\n1,0,Watch Later,Title name");
   fclose(new_user);

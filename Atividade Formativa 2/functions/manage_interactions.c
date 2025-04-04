@@ -1,5 +1,6 @@
 #include "../header/listas.h"
 #include "../header/helper.h"
+#include "../header/catalog.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -35,9 +36,10 @@ LInteractions *Load_Interactions(FILE *f_interactions)
 // Returns n if there's no recorded data about the current id.
 char Get_movie_current_status(LInteractions *l_interactions, int id)
 {
+  // We need to ignore the Add and remove from playlist
   while (l_interactions)
   {
-    if (l_interactions->movie_id == id)
+    if (l_interactions->movie_id == id && l_interactions->action != 'A' && l_interactions->action != 'R')
       return l_interactions->action;
     l_interactions = l_interactions->next;
   }
@@ -58,12 +60,12 @@ LInteractions *Update_Interactions(LInteractions *l_interactions, int action, in
     l_interactions = New_interaction(l_interactions, 's', movie_id);
     Save_Interactions(f_interactions, 's', movie_id);
   }
-  else if (action == 2 || action == 'r')
+  else if (action == 4 || action == 'r')
   {
     l_interactions = New_interaction(l_interactions, 'r', movie_id);
     Save_Interactions(f_interactions, 'r', movie_id);
   }
-  else if (action == 3 || action == 'w')
+  else if (action == 5 || action == 'w')
   {
     l_interactions = New_interaction(l_interactions, 'w', movie_id);
     Save_Interactions(f_interactions, 'w', movie_id);
@@ -72,6 +74,16 @@ LInteractions *Update_Interactions(LInteractions *l_interactions, int action, in
   {
     l_interactions = New_interaction(l_interactions, 'p', movie_id);
     Save_Interactions(f_interactions, 'p', movie_id);
+  }
+  else if (action == 'A')
+  {
+    l_interactions = New_interaction(l_interactions, 'A', movie_id);
+    Save_Interactions(f_interactions, 'A', movie_id);
+  }
+  else if (action == 'R')
+  {
+    l_interactions = New_interaction(l_interactions, 'A', movie_id);
+    Save_Interactions(f_interactions, 'A', movie_id);
   }
 
   return l_interactions;
@@ -101,6 +113,7 @@ LInteractions *Watching(LInteractions *l_interactions, FILE *f_interactions, cha
     else if (user_choice == 2)
     {
       printf("\nThank you for watching '%s' :)\n", movie_name);
+      printf("\n-----------------------------------------\n");
       l_interactions = Update_Interactions(l_interactions, 'w', movie_id, f_interactions);
       return l_interactions;
     }
@@ -108,12 +121,13 @@ LInteractions *Watching(LInteractions *l_interactions, FILE *f_interactions, cha
 
   // If we get here the user asked to go back to main menu, we need to "pause", save and then exit.
   l_interactions = Update_Interactions(l_interactions, 'p', movie_id, f_interactions);
+  printf("\n-----------------------------------------\n");
   return l_interactions;
 }
 
-LInteractions *Watch_a_movie(LInteractions *l_interactions, LCatalog *l_catalog, FILE *f_interactions)
+LInteractions *Watch_a_movie(LInteractions *l_interactions, LCatalog *l_catalog, LFavorite *l_favorites, FILE *f_interactions, FILE *f_favorites)
 {
-  int user_choice = 0, title_id;
+  int user_choice = 0, title_id, is_favorited;
   char current_status;
 
   printf("\nInsert the title id or -1 to return to main menu\n");
@@ -132,32 +146,48 @@ LInteractions *Watch_a_movie(LInteractions *l_interactions, LCatalog *l_catalog,
     return l_interactions;
   }
 
-  while (user_choice != 1 && user_choice != 2 && user_choice != 3 && user_choice != -1)
+  current_status = Get_movie_current_status(l_interactions, title_id);
+
+  while (user_choice != 1 && user_choice != 4 && user_choice != 5 && user_choice != -1)
   {
+    is_favorited = Is_favorited(l_favorites, WATCH_LATER, title_id);
     printf("\n-----------------------------------------\n");
     printf("You selected '%s'\n", l_catalog->title);
     printf("Would you like to:\n");
     // If we get here there's a valid user choice and we'll get the movie current status.
-    current_status = Get_movie_current_status(l_interactions, title_id);
 
     // n stands for none and w for watched
     if (current_status == 'n' || current_status == 'w')
-      printf(" 1 - Start\n-1 - Main menu\n");
+      printf(" 1 - Start\n 2 - %s watch later\n 3 - Add to a playlist\n-1 - Main menu\n", is_favorited ? "Remove from" : "Save on");
     else if (current_status == 'p')
-      printf(" 1 - Start from the beginning\n 2 - Resume\n 3 - Mark as done\n-1 - Main menu\n");
+      printf(" 1 - Start from the beginning\n 2 - %s watch later\n 3 - Add to a playlist\n 4 - Resume\n 5 - Mark as done\n-1 - Main menu\n", is_favorited ? "Remove from" : "Save on");
 
     printf("Option: ");
     user_choice = Safe_answer();
     printf("\n-----------------------------------------\n");
 
-    if (user_choice != 1 && user_choice != 2 && user_choice != 3 && user_choice != -1)
+    if (user_choice < -1 || user_choice > 5 || user_choice == 0)
       printf("Invalid Option\n");
     else if (user_choice == -1)
       return l_interactions;
+    else if (user_choice == 2)
+    {
+      // If it's already saved on watch latter, removes, otherwise add.
+      l_interactions = Update_Interactions(l_interactions, is_favorited ? 'R' : 'A', title_id, f_interactions);
+      if (is_favorited == 0)
+        Add_to_playlist(l_favorites, f_favorites, WATCH_LATER, title_id, l_catalog->title);
+      else if (is_favorited == 1)
+        printf("TODO ... Remove from playlist and update the favorites file.");
+    }
+    else if (user_choice == 3)
+    {
+      l_interactions = Update_Interactions(l_interactions, 'A', title_id, f_interactions);
+      Add_to_custom_playlist(l_favorites, f_favorites, title_id, l_catalog->title);
+    }
     else
       l_interactions = Update_Interactions(l_interactions, user_choice, title_id, f_interactions);
   }
-  if (user_choice != 3)
+  if (user_choice == 1 || user_choice == 4)
     l_interactions = Watching(l_interactions, f_interactions, l_catalog->title, title_id);
 
   return l_interactions;

@@ -14,7 +14,7 @@ LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavo
   while (user_choice != -1)
   {
     printf("\nPlease choose one of the options below\n 1 - Choose a title\n 2 - Show all titles.\n 3 - Search.\n 4 - Add a new title.");
-    printf("\n 5 - Remove a title.\n 6 - Edit a title.\n 7 - Save.\n 8 - See my lists\n 9 - Create a new list\n10 - StreamFlix recommendation\n-1 - Exit.\n");
+    printf("\n 5 - Remove a title.\n 6 - Edit a title.\n 7 - Save.\n 8 - See my playlists\n 9 - Create a new playlist\n10 - StreamFlix recommendation\n-1 - Exit.\n");
     printf("Option: ");
     user_choice = Safe_answer();
 
@@ -27,7 +27,7 @@ LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavo
     }
     case 1:
     {
-      l_interactions = Watch_a_movie(l_interactions, l_catalog, t_files->interactions);
+      l_interactions = Watch_a_movie(l_interactions, l_catalog, l_favorite, t_files->interactions, t_files->favorites);
       break;
     }
     case 2:
@@ -66,12 +66,12 @@ LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavo
     }
     case 8:
     {
-      Show_all_favorites(l_favorite);
+      Show_playlist_titles(l_favorite);
       break;
     }
     case 9:
     {
-      Create_new_favorite(l_favorite, t_files->favorites);
+      l_favorite = Create_new_favorite(l_favorite, t_files->favorites);
       break;
     }
     case 10:
