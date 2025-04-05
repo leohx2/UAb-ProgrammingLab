@@ -176,8 +176,8 @@ LInteractions *Handle_movies_choices(TLists *t_lists, TFiles *t_files, char curr
 
     printf("Option: ");
     user_choice = Safe_answer();
-    printf("\n-----------------------------------------\n");
 
+    printf("\n-----------------------------------------\n");
     if (user_choice < -1 || user_choice > 5 || user_choice == 0)
       printf("Invalid Option\n");
     else if (user_choice == -1)
@@ -202,5 +202,8 @@ LInteractions *Handle_movies_choices(TLists *t_lists, TFiles *t_files, char curr
   if (user_choice == 1 || user_choice == 4)
     t_lists->l_interactions = Watching(t_lists->l_interactions, t_files->interactions, t_lists->l_catalog->title, title_id);
 
+  // Increase de views numbers when mark as done.
+  if (user_choice == 5)
+    t_lists->l_catalog->views++;
   return t_lists->l_interactions;
 }
