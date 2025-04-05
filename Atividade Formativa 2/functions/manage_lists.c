@@ -9,7 +9,6 @@
 LCatalog *Add_title(LCatalog *list, LCatalog *aux)
 {
   LCatalog *novo;
-  static int id = 1;
 
   novo = (LCatalog *)malloc(sizeof(LCatalog));
 
@@ -31,7 +30,7 @@ LCatalog *Add_title(LCatalog *list, LCatalog *aux)
     novo->duration = aux->duration;
     novo->views = aux->views;
     novo->next = list;
-    novo->id = id++;
+    novo->id = aux->id;
     return novo;
   }
 
@@ -92,4 +91,118 @@ void Print_catalog(LCatalog *list)
     Print_title_details(list);
     list = list->next;
   }
+}
+
+// USER
+TUser *Free_user(TUser *t_user)
+{
+  if (t_user)
+  {
+    if (t_user->username)
+      free(t_user->username);
+    free(t_user);
+  }
+  return NULL;
+}
+
+// INTERACTIONS
+LInteractions *New_interaction(LInteractions *l_interaction, char action, int movie_id)
+{
+  LInteractions *new;
+
+  new = (LInteractions *)malloc(sizeof(LInteractions));
+
+  if (new != NULL)
+  {
+    // add from the newest to the oldest
+    new->movie_id = movie_id;
+    new->action = action;
+    new->next = l_interaction;
+
+    return new;
+  }
+
+  return l_interaction;
+}
+
+LInteractions *Free_all_interactions(LInteractions *l_interactions)
+{
+  LInteractions *aux;
+
+  while (l_interactions)
+  {
+    aux = l_interactions->next;
+    free(l_interactions);
+    l_interactions = aux;
+  }
+
+  return l_interactions;
+}
+
+LFavorite *Add_new_favorite(LFavorite *l_playlist, int list_id, int title_id, char *list_name, char *movie_name)
+{
+  LFavorite *new;
+
+  new = (LFavorite *)malloc(sizeof(LFavorite));
+  if (new == NULL)
+  {
+    printf("Error memory allocation. Add_new_favorite.");
+    return l_playlist;
+  }
+  new->id = list_id;
+  new->title_id = title_id;
+  new->name = (char *)malloc(sizeof(char) * strlen(list_name));
+  if (list_name[strlen(list_name) - 1] == '\n')
+    list_name[strlen(list_name) - 1] = '\0';
+  strcpy(new->name, list_name);
+  new->movie_name = (char *)malloc(sizeof(char) * strlen(movie_name));
+  if (movie_name[strlen(movie_name) - 1] == '\n')
+    movie_name[strlen(movie_name) - 1] = '\0';
+  strcpy(new->movie_name, movie_name);
+  new->next = l_playlist;
+
+  return new;
+}
+
+// Add in order, from the oldest to the newest
+LFavorite *Add_favorite_in_order(LFavorite *l_playlist, int list_id, int title_id, char *list_name, char *movie_name)
+{
+  LFavorite *hold_1st_p;
+
+  // Check if there's no items
+  if (l_playlist == NULL)
+  {
+    l_playlist = Add_new_favorite(l_playlist, list_id, title_id, list_name, movie_name);
+    return l_playlist;
+  }
+
+  hold_1st_p = l_playlist;
+
+  while (l_playlist && l_playlist->next)
+    l_playlist = l_playlist->next;
+
+  l_playlist->next = Add_new_favorite(l_playlist->next, list_id, title_id, list_name, movie_name);
+  return hold_1st_p;
+}
+
+LFavorite *Free_playlist(LFavorite *l_playlist)
+{
+  LFavorite *aux;
+  aux = l_playlist->next;
+  if (l_playlist->name)
+    free(l_playlist->name);
+  if (l_playlist->movie_name)
+    free(l_playlist->movie_name);
+  free(l_playlist);
+
+  l_playlist = aux;
+  return l_playlist;
+}
+
+LFavorite *Free_all_playlists(LFavorite *l_playlist)
+{
+  while (l_playlist)
+    l_playlist = Free_playlist(l_playlist);
+
+  return l_playlist;
 }
