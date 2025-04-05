@@ -38,8 +38,14 @@ typedef struct
   FILE *interactions;
   FILE *favorites;
   FILE *movies;
-
 } TFiles;
+
+typedef struct
+{
+  LCatalog *l_catalog;
+  LInteractions *l_interactions;
+  LFavorite *l_playlist;
+} TLists;
 
 LCatalog *Save_on_list(FILE *file, LCatalog *l_catalog);
 LCatalog *Add_new(LCatalog *list, LCatalog *aux);
@@ -50,6 +56,7 @@ LInteractions *Load_Interactions(FILE *f_interactions);
 LInteractions *New_interaction(LInteractions *l_interaction, char action, int movie_id);
 LInteractions *Free_all_interactions(LInteractions *l_interactions);
 LFavorite *Add_favorite_in_order(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name);
-LFavorite *Free_all_favorites(LFavorite *l_favorites);
+LFavorite *Free_playlist(LFavorite *l_favorites);
+LFavorite *Free_all_playlists(LFavorite *l_favorites);
 
 #endif

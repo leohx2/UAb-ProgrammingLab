@@ -1,8 +1,6 @@
 list ID, title ID, List name, Title name
 1,0,Watch Later,Title name
-1,20,Watch Later,Frozen II
-2,0,Nova playlist,Title name
 1,1,Watch Later,100 hours
-2,7,Nova playlist,The Secret Life of Walter Mitty
-2,1,Nova playlist,101 hours
-2,8,Nova playlist,Into the Wild
+1,7,Watch Later,The Secret Life of Walter Mitty
+1,21,Watch Later,The Matrix
+2,0,Ver com marido,Title name

@@ -1,4 +1,6 @@
+#include "../header/listas.h"
 #include "../header/helper.h"
+#include "../header/catalog.h"
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
@@ -55,7 +57,7 @@ void Create_new_csv(char *path, char *username, int mode)
   free(holder);
 }
 
-FILE *Open_interaction_csv(char *path, char *username)
+FILE *Open_interaction_csv(char *path, char *username, char *mode)
 {
   char *holder;
   FILE *new_user;
@@ -63,7 +65,7 @@ FILE *Open_interaction_csv(char *path, char *username)
   strcat(holder, path);
   strcat(holder, username);
   strcat(holder, ".csv");
-  new_user = fopen(holder, "r+");
+  new_user = fopen(holder, mode);
   free(holder);
 
   return (new_user);

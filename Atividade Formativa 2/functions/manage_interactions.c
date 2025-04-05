@@ -82,8 +82,8 @@ LInteractions *Update_Interactions(LInteractions *l_interactions, int action, in
   }
   else if (action == 'R')
   {
-    l_interactions = New_interaction(l_interactions, 'A', movie_id);
-    Save_Interactions(f_interactions, 'A', movie_id);
+    l_interactions = New_interaction(l_interactions, 'R', movie_id);
+    Save_Interactions(f_interactions, 'R', movie_id);
   }
 
   return l_interactions;
@@ -125,34 +125,46 @@ LInteractions *Watching(LInteractions *l_interactions, FILE *f_interactions, cha
   return l_interactions;
 }
 
-LInteractions *Watch_a_movie(LInteractions *l_interactions, LCatalog *l_catalog, LFavorite *l_favorites, FILE *f_interactions, FILE *f_favorites)
+LInteractions *Watch_a_movie(TLists *t_lists, TFiles *t_files, char *username)
 {
-  int user_choice = 0, title_id, is_favorited;
+  int title_id;
   char current_status;
+  LCatalog *hold_1st_p;
 
   printf("\nInsert the title id or -1 to return to main menu\n");
   printf("Title id: ");
   title_id = Safe_answer();
 
   if (title_id == -1)
-    return l_interactions;
+    return t_lists->l_interactions;
 
-  while (l_catalog && l_catalog->id != title_id)
-    l_catalog = l_catalog->next;
+  hold_1st_p = t_lists->l_catalog;
+  while (t_lists->l_catalog && t_lists->l_catalog->id != title_id)
+    t_lists->l_catalog = t_lists->l_catalog->next;
 
-  if (l_catalog == NULL)
+  if (t_lists->l_catalog == NULL)
   {
     printf("\nTitle not found.\n");
-    return l_interactions;
+    t_lists->l_catalog = hold_1st_p;
+    return t_lists->l_interactions;
   }
 
-  current_status = Get_movie_current_status(l_interactions, title_id);
+  current_status = Get_movie_current_status(t_lists->l_interactions, title_id);
+
+  t_lists->l_interactions = Handle_movies_choices(t_lists, t_files, current_status, title_id, username);
+  t_lists->l_catalog = hold_1st_p;
+  return t_lists->l_interactions;
+}
+
+LInteractions *Handle_movies_choices(TLists *t_lists, TFiles *t_files, char current_status, int title_id, char *username)
+{
+  int user_choice = 0, is_favorited;
 
   while (user_choice != 1 && user_choice != 4 && user_choice != 5 && user_choice != -1)
   {
-    is_favorited = Is_favorited(l_favorites, WATCH_LATER, title_id);
+    is_favorited = Is_favorited(t_lists->l_playlist, WATCH_LATER, title_id);
     printf("\n-----------------------------------------\n");
-    printf("You selected '%s'\n", l_catalog->title);
+    printf("You selected '%s'\n", t_lists->l_catalog->title);
     printf("Would you like to:\n");
     // If we get here there's a valid user choice and we'll get the movie current status.
 
@@ -169,26 +181,26 @@ LInteractions *Watch_a_movie(LInteractions *l_interactions, LCatalog *l_catalog,
     if (user_choice < -1 || user_choice > 5 || user_choice == 0)
       printf("Invalid Option\n");
     else if (user_choice == -1)
-      return l_interactions;
+      return t_lists->l_interactions;
     else if (user_choice == 2)
     {
       // If it's already saved on watch latter, removes, otherwise add.
-      l_interactions = Update_Interactions(l_interactions, is_favorited ? 'R' : 'A', title_id, f_interactions);
+      t_lists->l_interactions = Update_Interactions(t_lists->l_interactions, is_favorited ? 'R' : 'A', title_id, t_files->interactions);
       if (is_favorited == 0)
-        Add_to_playlist(l_favorites, f_favorites, WATCH_LATER, title_id, l_catalog->title);
+        Add_to_playlist(t_lists->l_playlist, t_files->favorites, WATCH_LATER, title_id, t_lists->l_catalog->title);
       else if (is_favorited == 1)
-        printf("TODO ... Remove from playlist and update the favorites file.");
+        t_lists->l_playlist = Remove_from_playlist(t_lists->l_playlist, t_files->favorites, WATCH_LATER, title_id, username);
     }
     else if (user_choice == 3)
     {
-      l_interactions = Update_Interactions(l_interactions, 'A', title_id, f_interactions);
-      Add_to_custom_playlist(l_favorites, f_favorites, title_id, l_catalog->title);
+      t_lists->l_interactions = Update_Interactions(t_lists->l_interactions, 'A', title_id, t_files->interactions);
+      Add_to_custom_playlist(t_lists->l_playlist, t_files->favorites, title_id, t_lists->l_catalog->title);
     }
     else
-      l_interactions = Update_Interactions(l_interactions, user_choice, title_id, f_interactions);
+      t_lists->l_interactions = Update_Interactions(t_lists->l_interactions, user_choice, title_id, t_files->interactions);
   }
   if (user_choice == 1 || user_choice == 4)
-    l_interactions = Watching(l_interactions, f_interactions, l_catalog->title, title_id);
+    t_lists->l_interactions = Watching(t_lists->l_interactions, t_files->interactions, t_lists->l_catalog->title, title_id);
 
-  return l_interactions;
+  return t_lists->l_interactions;
 }

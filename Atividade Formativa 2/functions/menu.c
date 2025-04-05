@@ -7,14 +7,14 @@
 void Edit_menu(LCatalog *l_catalog);
 void Search_menu(LCatalog *l_catalog);
 
-LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavorite *l_favorite, char *file_name, TFiles *t_files)
+LCatalog *Initial_menu(TLists *t_listas, char *file_name, TFiles *t_files, char *username)
 {
   int user_choice = 0, id;
 
   while (user_choice != -1)
   {
     printf("\nPlease choose one of the options below\n 1 - Choose a title\n 2 - Show all titles.\n 3 - Search.\n 4 - Add a new title.");
-    printf("\n 5 - Remove a title.\n 6 - Edit a title.\n 7 - Save.\n 8 - See my playlists\n 9 - Create a new playlist\n10 - StreamFlix recommendation\n-1 - Exit.\n");
+    printf("\n 5 - Remove a title.\n 6 - Edit a title.\n 7 - Save.\n 8 - See my playlists\n 9 - Create a new playlist\n10 - Delete a playlist\n11 - StreamFlix recommendation\n-1 - Exit.\n");
     printf("Option: ");
     user_choice = Safe_answer();
 
@@ -27,54 +27,59 @@ LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavo
     }
     case 1:
     {
-      l_interactions = Watch_a_movie(l_interactions, l_catalog, l_favorite, t_files->interactions, t_files->favorites);
+      t_listas->l_interactions = Watch_a_movie(t_listas, t_files, username);
       break;
     }
     case 2:
     {
       printf("\nHere's a list of all the titles we have:\n");
-      Print_catalog(l_catalog);
+      Print_catalog(t_listas->l_catalog);
       break;
     }
     case 3:
     {
-      Search_menu(l_catalog);
+      Search_menu(t_listas->l_catalog);
       break;
     }
     case 4:
     {
-      l_catalog = User_add_new_title(l_catalog);
+      t_listas->l_catalog = User_add_new_title(t_listas->l_catalog);
       break;
     }
     case 5:
     {
       printf("\nID to remove: ");
       id = Safe_answer();
-      l_catalog = User_remove_title(l_catalog, id);
+      t_listas->l_catalog = User_remove_title(t_listas->l_catalog, id);
       break;
     }
     case 6:
     {
-      Edit_menu(l_catalog);
+      Edit_menu(t_listas->l_catalog);
       break;
     }
     case 7:
     {
-      t_files->movies = Save_Catalog(l_catalog, t_files->movies, file_name);
+      t_files->movies = Save_Catalog(t_listas->l_catalog, t_files->movies, file_name);
       printf("\n Changes saved!\n");
       break;
     }
     case 8:
     {
-      Show_playlist_titles(l_favorite);
+      Show_playlist_titles(t_listas, t_files, username);
       break;
     }
     case 9:
     {
-      l_favorite = Create_new_favorite(l_favorite, t_files->favorites);
+      t_listas->l_playlist = Create_new_favorite(t_listas->l_playlist, t_files->favorites);
       break;
     }
     case 10:
+    {
+      Delete_playlist(t_listas, t_files, username);
+      break;
+    }
+    case 11:
     {
       printf("TODO... Recommendation\n");
       break;
@@ -83,7 +88,7 @@ LCatalog *Initial_menu(LCatalog *l_catalog, LInteractions *l_interactions, LFavo
       printf("Invalid option\n");
     }
   }
-  return l_catalog;
+  return t_listas->l_catalog;
 }
 
 void Edit_menu(LCatalog *l_catalog)
@@ -119,4 +124,21 @@ void Search_menu(LCatalog *l_catalog)
     Search_PEGI(l_catalog);
   else
     printf("Invalid option.\n");
+}
+
+int Remove_from_playlist_menu()
+{
+  int user_choice = -2;
+
+  while (user_choice < -1 || user_choice == 0)
+  {
+    printf("\nIf you want to remove a title from a playlist, type the title ID, otherwise, -1 to return to main menu\n");
+    printf("Option: ");
+    user_choice = Safe_answer();
+
+    if (user_choice == 0)
+      printf("\nInvalid option.\n");
+  }
+
+  return user_choice;
 }

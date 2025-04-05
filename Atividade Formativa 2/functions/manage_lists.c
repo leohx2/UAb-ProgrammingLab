@@ -139,7 +139,7 @@ LInteractions *Free_all_interactions(LInteractions *l_interactions)
   return l_interactions;
 }
 
-LFavorite *Add_new_favorite(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name)
+LFavorite *Add_new_favorite(LFavorite *l_playlist, int list_id, int title_id, char *list_name, char *movie_name)
 {
   LFavorite *new;
 
@@ -147,54 +147,62 @@ LFavorite *Add_new_favorite(LFavorite *l_favorite, int list_id, int title_id, ch
   if (new == NULL)
   {
     printf("Error memory allocation. Add_new_favorite.");
-    return l_favorite;
+    return l_playlist;
   }
   new->id = list_id;
   new->title_id = title_id;
-  new->name = (char *)malloc(sizeof(char) * strlen(list_name) + 1);
+  new->name = (char *)malloc(sizeof(char) * strlen(list_name));
+  if (list_name[strlen(list_name) - 1] == '\n')
+    list_name[strlen(list_name) - 1] = '\0';
   strcpy(new->name, list_name);
-  new->movie_name = (char *)malloc(sizeof(char) * strlen(movie_name) + 1);
+  new->movie_name = (char *)malloc(sizeof(char) * strlen(movie_name));
+  if (movie_name[strlen(movie_name) - 1] == '\n')
+    movie_name[strlen(movie_name) - 1] = '\0';
   strcpy(new->movie_name, movie_name);
-  new->next = l_favorite;
+  new->next = l_playlist;
 
   return new;
 }
 
 // Add in order, from the oldest to the newest
-LFavorite *Add_favorite_in_order(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name)
+LFavorite *Add_favorite_in_order(LFavorite *l_playlist, int list_id, int title_id, char *list_name, char *movie_name)
 {
   LFavorite *hold_1st_p;
 
   // Check if there's no items
-  if (l_favorite == NULL)
+  if (l_playlist == NULL)
   {
-    l_favorite = Add_new_favorite(l_favorite, list_id, title_id, list_name, movie_name);
-    return l_favorite;
+    l_playlist = Add_new_favorite(l_playlist, list_id, title_id, list_name, movie_name);
+    return l_playlist;
   }
 
-  hold_1st_p = l_favorite;
+  hold_1st_p = l_playlist;
 
-  while (l_favorite && l_favorite->next)
-    l_favorite = l_favorite->next;
+  while (l_playlist && l_playlist->next)
+    l_playlist = l_playlist->next;
 
-  l_favorite->next = Add_new_favorite(l_favorite->next, list_id, title_id, list_name, movie_name);
+  l_playlist->next = Add_new_favorite(l_playlist->next, list_id, title_id, list_name, movie_name);
   return hold_1st_p;
 }
 
-LFavorite *Free_all_favorites(LFavorite *l_favorites)
+LFavorite *Free_playlist(LFavorite *l_playlist)
 {
   LFavorite *aux;
+  aux = l_playlist->next;
+  if (l_playlist->name)
+    free(l_playlist->name);
+  if (l_playlist->movie_name)
+    free(l_playlist->movie_name);
+  free(l_playlist);
 
-  while (l_favorites)
-  {
-    aux = l_favorites->next;
-    if (l_favorites->name)
-      free(l_favorites->name);
-    if (l_favorites->movie_name)
-      free(l_favorites->movie_name);
-    free(l_favorites);
+  l_playlist = aux;
+  return l_playlist;
+}
 
-    l_favorites = aux;
-  }
-  return l_favorites;
+LFavorite *Free_all_playlists(LFavorite *l_playlist)
+{
+  while (l_playlist)
+    l_playlist = Free_playlist(l_playlist);
+
+  return l_playlist;
 }
