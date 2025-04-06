@@ -219,3 +219,15 @@ FILE *Save_Catalog(LCatalog *l_catalog, FILE *f, char *fileName)
   fclose(f);
   return fopen(fileName, "r");
 }
+
+void Print_Movie_name(LCatalog *l_catalog, int id)
+{
+  LCatalog *aux;
+
+  aux = l_catalog;
+  while (aux && aux->id != id)
+    aux = aux->next;
+
+  if (aux)
+    printf("%s", aux->title);
+}

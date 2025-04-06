@@ -206,3 +206,35 @@ LFavorite *Free_all_playlists(LFavorite *l_playlist)
 
   return l_playlist;
 }
+
+TViews *Add_new_view(TViews *t_views, int title_id, int views)
+{
+  TViews *new;
+
+  new = (TViews *)malloc(sizeof(TViews));
+  if (new == NULL)
+  {
+    printf("Error. Memory allocation views\n");
+    return NULL;
+  }
+
+  new->show_id = title_id;
+  new->views = views;
+  new->next = t_views;
+
+  return new;
+}
+
+TViews *Free_all_views(TViews *t_views)
+{
+  TViews *aux;
+
+  while (t_views)
+  {
+    aux = t_views->next;
+    free(t_views);
+    t_views = aux;
+  }
+
+  return t_views;
+}

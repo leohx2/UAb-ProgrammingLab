@@ -45,6 +45,10 @@ int main()
 
   t_lists->l_catalog = Save_on_list(t_files->movies, t_lists->l_catalog);
 
+  // JUST TESTING BY NOW
+  Report(t_lists->l_catalog);
+  // ERASE TILL HERE
+
   t_user = Login(f_user);
   fclose(f_user);
   printf("\n____________Welcome to Streamflix, %s!____________\n", t_user->username);
