@@ -15,6 +15,7 @@ int main()
   TFiles *t_files;
   TLists *t_lists;
   TUser *t_user;
+  int user_choice = 0;
 
   t_lists = (TLists *)malloc(sizeof(TLists));
   t_files = (TFiles *)malloc(sizeof(TFiles));
@@ -45,11 +46,20 @@ int main()
 
   t_lists->l_catalog = Save_on_list(t_files->movies, t_lists->l_catalog);
 
-  // JUST TESTING BY NOW
-  Report(t_lists->l_catalog);
-  // ERASE TILL HERE
+  while (user_choice != 2)
+  {
+    printf("\n------------- Please choose an option -------------\n");
+    printf("1: StreamFlix report\n2: Login\n");
+    printf("option: ");
+    user_choice = Safe_answer();
+    if (user_choice == 1)
+      Report(t_lists->l_catalog);
+    else if (user_choice == 2)
+      t_user = Login(f_user);
+    else
+      printf("\nInvalid option\n");
+  }
 
-  t_user = Login(f_user);
   fclose(f_user);
   printf("\n____________Welcome to Streamflix, %s!____________\n", t_user->username);
 

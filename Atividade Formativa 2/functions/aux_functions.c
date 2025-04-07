@@ -61,6 +61,7 @@ FILE *Open_interaction_csv(char *path, char *username, char *mode)
 {
   char *holder;
   FILE *new_user;
+
   holder = (char *)malloc(sizeof(char) * strlen(path) + strlen(username) + 4);
   strcat(holder, path);
   strcat(holder, username);

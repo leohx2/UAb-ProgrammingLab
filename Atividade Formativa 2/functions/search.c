@@ -90,8 +90,8 @@ int Print_pegi_matchs(LCatalog *aux, int user_input, int mode)
 // Example: 13, 13+, or even 13++++
 void Search_PEGI(LCatalog *l_catalog)
 {
-  char user_input[10], holder[10], answer[10];
-  int input_pegi, title_pegi;
+  char user_input[10], answer[10];
+  int input_pegi;
   LCatalog *aux;
 
   printf("\nAge rating (numbers only, i.e '13+', '13', '0+', '0'): ");

@@ -129,7 +129,6 @@ LCatalog *User_add_new_title(LCatalog *l_catalog)
 {
   LCatalog *aux;
   char s[3][MAXSTR];
-  int i;
 
   aux = (LCatalog *)malloc(sizeof(LCatalog));
   if (aux == NULL)

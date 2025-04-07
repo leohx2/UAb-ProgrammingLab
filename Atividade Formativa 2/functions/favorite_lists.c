@@ -192,9 +192,6 @@ int Is_favorited(LFavorite *l_playlist, int list_id, int movie_id)
 void Add_to_custom_playlist(LFavorite *l_playlist, FILE *f_favorites, int title_id, char *title)
 {
   int user_choice = 0;
-  LFavorite *aux;
-
-  aux = l_playlist;
 
   Show_all_playlist(l_playlist);
 
@@ -260,7 +257,7 @@ void SavePlaylistFile(LFavorite *l_playlist, FILE *f_playlist, char *username)
 
 void Delete_playlist(TLists *t_lists, TFiles *t_files, char *username)
 {
-  int counter = 0, list_id, id_to_delete;
+  int list_id, id_to_delete;
   LFavorite *aux;
 
   printf("\n-----------------------------\n");

@@ -91,10 +91,10 @@ void Print_report(LViews *l_views, LCatalog *l_catalog, LCategory *l_category, c
   int i = 1;
 
   views = l_views;
-  printf("\n--------------------------------------\n");
-  printf("Welcome to the streamFlix report!\n");
+  printf("\n--------------------------------------------------\n");
+  printf("\t\tStreamFlix report!\n");
 
-  printf("\n\n- Check out our top 5 most-streamed shows:\n");
+  printf("\n- Check out our top 5 most-streamed shows:\n");
   while (views && i <= MOVIES_REPORT)
   {
     printf("\n%2d: ", i);
@@ -116,7 +116,7 @@ void Print_report(LViews *l_views, LCatalog *l_catalog, LCategory *l_category, c
 
   printf("\n\n- Highest-engagemente user:\n");
   printf("\nCongratulations to %s, our top user with %d interactions!\n", username, h_interaction);
-  printf("\n--------------------------------------\n");
+  printf("\n--------------------------------------------------\n");
 }
 
 LViews *Streamed_shows(char *username, LViews *l_views, LCatalog *l_catalog, int *interactions_counter)
