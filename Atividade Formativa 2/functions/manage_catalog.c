@@ -90,7 +90,7 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     }
     if (content_to_edit == 2 || content_to_edit == 6)
     {
-      printf("\nCurrent category: %s\nNew category (if there is more than one category, use a backslash (\\) as a separator): ", l_catalog->category);
+      printf("\nCurrent category: %s\nNew category (if there is more than one category, use a slash (/) as a separator): ", l_catalog->category);
       scanf(" %[^\n]", aux);
       if (l_catalog->category)
         free(l_catalog->category);
@@ -230,4 +230,19 @@ void Print_Movie_name(LCatalog *l_catalog, int id)
 
   if (aux)
     printf("%s", aux->title);
+}
+
+int Valid_show_id(LCatalog *l_catalog, int id)
+{
+  LCatalog *aux;
+
+  aux = l_catalog;
+  while (aux)
+  {
+    if (aux->id == id)
+      return 1;
+    aux = aux->next;
+  }
+
+  return 0;
 }

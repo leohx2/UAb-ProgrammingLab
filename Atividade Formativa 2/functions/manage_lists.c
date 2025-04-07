@@ -207,11 +207,11 @@ LFavorite *Free_all_playlists(LFavorite *l_playlist)
   return l_playlist;
 }
 
-TViews *Add_new_view(TViews *t_views, int title_id, int views)
+LViews *Add_new_view(LViews *l_views, int title_id, int views)
 {
-  TViews *new;
+  LViews *new;
 
-  new = (TViews *)malloc(sizeof(TViews));
+  new = (LViews *)malloc(sizeof(LViews));
   if (new == NULL)
   {
     printf("Error. Memory allocation views\n");
@@ -220,21 +220,64 @@ TViews *Add_new_view(TViews *t_views, int title_id, int views)
 
   new->show_id = title_id;
   new->views = views;
-  new->next = t_views;
+  new->next = l_views;
 
   return new;
 }
 
-TViews *Free_all_views(TViews *t_views)
+LViews *Free_all_views(LViews *l_views)
 {
-  TViews *aux;
+  LViews *aux;
 
-  while (t_views)
+  while (l_views)
   {
-    aux = t_views->next;
-    free(t_views);
-    t_views = aux;
+    aux = l_views->next;
+    free(l_views);
+    l_views = aux;
   }
 
-  return t_views;
+  return l_views;
+}
+
+LCategory *Add_new_category(LCategory *l_category, char *category, int views)
+{
+  LCategory *new;
+
+  new = (LCategory *)malloc(sizeof(LCategory));
+  if (new == NULL)
+  {
+    printf("Error. Memory allocation category\n");
+    return NULL;
+  }
+
+  new->counter = views;
+  new->category = (char *)malloc(sizeof(char) * strlen(category) + 1);
+  if (new->category == NULL)
+  {
+    printf("Error. Memory allocation new->category\n");
+    return NULL;
+  }
+  strcpy(new->category, category);
+  new->next = l_category;
+  return new;
+}
+
+LCategory *Free_category(LCategory *l_category)
+{
+  LCategory *aux;
+
+  aux = l_category->next;
+  if (l_category->category)
+    free(l_category->category);
+  free(l_category);
+
+  return aux;
+}
+
+LCategory *Free_all_categories(LCategory *l_category)
+{
+  while (l_category)
+    l_category = Free_category(l_category);
+
+  return l_category;
 }

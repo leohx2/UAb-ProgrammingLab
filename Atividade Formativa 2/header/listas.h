@@ -52,7 +52,13 @@ typedef struct SViews
   int show_id;
   int views;
   struct SViews *next;
-} TViews;
+} LViews;
+typedef struct SCategory
+{
+  char *category;
+  int counter;
+  struct SCategory *next;
+} LCategory;
 
 LCatalog *Save_on_list(FILE *file, LCatalog *l_catalog);
 LCatalog *Add_new(LCatalog *list, LCatalog *aux);
@@ -65,7 +71,10 @@ LInteractions *Free_all_interactions(LInteractions *l_interactions);
 LFavorite *Add_favorite_in_order(LFavorite *l_favorite, int list_id, int title_id, char *list_name, char *movie_name);
 LFavorite *Free_playlist(LFavorite *l_favorites);
 LFavorite *Free_all_playlists(LFavorite *l_favorites);
-TViews *Free_all_views(TViews *t_views);
-TViews *Add_new_view(TViews *t_views, int title_id, int views);
+LViews *Add_new_view(LViews *l_views, int title_id, int views);
+LViews *Free_all_views(LViews *l_views);
+LCategory *Add_new_category(LCategory *l_category, char *category, int views);
+LCategory *Free_category(LCategory *l_category);
+LCategory *Free_all_categories(LCategory *l_category);
 
 #endif

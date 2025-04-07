@@ -26,5 +26,6 @@ void SavePlaylistFile(LFavorite *l_playlist, FILE *f_playlist, char *username);
 void Delete_playlist(TLists *t_lists, TFiles *t_files, char *username);
 LInteractions *Update_Interactions(LInteractions *l_interactions, int action, int movie_id, FILE *f_interactions);
 void Print_Movie_name(LCatalog *l_catalog, int id);
+int Valid_show_id(LCatalog *l_catalog, int id);
 
 #endif
