@@ -77,6 +77,7 @@ int main()
   {
     printf("Error, user database not found.\n");
     fclose(t_files->movies);
+    return EXIT_FAILURE;
   }
 
 #ifdef _WIN32
@@ -89,6 +90,7 @@ int main()
     printf("Error, user database not found.\n");
     fclose(t_files->movies);
     fclose(t_files->interactions);
+    return EXIT_FAILURE;
   }
 
   t_lists->l_playlist = Load_favorites(t_files->favorites);
