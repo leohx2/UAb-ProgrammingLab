@@ -64,9 +64,13 @@ FILE *Open_interaction_csv(char *path, char *username, char *mode)
   FILE *new_user;
 
   holder = (char *)malloc(sizeof(char) * strlen(path) + strlen(username) + 4);
+  holder[0] = '\0';
   strcat(holder, path);
   strcat(holder, username);
   strcat(holder, ".csv");
+  // APAGAR TESTE
+  printf("\nTESTESTES .%s.\n", holder);
+  // ERASE
   new_user = fopen(holder, mode);
   free(holder);
 
