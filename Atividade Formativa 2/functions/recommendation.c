@@ -264,6 +264,9 @@ LRecommendation *Sort_recommendations(LRecommendation *l_recommendation)
       recommendation->next->categories = strdup(aux->categories);
 
       counter++;
+
+      if (aux)
+        aux = Free_all_recommendations(aux);
     }
 
     recommendation = recommendation->next;
