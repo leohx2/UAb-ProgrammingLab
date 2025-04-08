@@ -240,6 +240,7 @@ LRecommendation *Sort_recommendations(LRecommendation *l_recommendation)
   int counter = 0;
   LRecommendation *recommendation, *aux;
 
+  aux = NULL;
   recommendation = l_recommendation;
 
   while (recommendation && recommendation->next)
