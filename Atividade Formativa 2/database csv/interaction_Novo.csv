@@ -1,0 +1,11 @@
+Action('p'/'s'/'w'/'r'/'A'/'R' for pause/stream/watched/resume/Add to playlist/Remove from playlist),title_id
+s,21
+w,21
+A,21
+R,21
+s,20
+w,20
+s,3
+w,3
+s,16
+w,16

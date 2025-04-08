@@ -3,6 +3,7 @@
 #include "../header/catalog.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define MAXSTR 255
 

@@ -1,6 +1,5 @@
 #ifndef MYFUNCTIONS_H
 #define MYFUNCTIONS_H
-#include <stdio.h>
 #include "listas.h"
 #include "search.h"
 

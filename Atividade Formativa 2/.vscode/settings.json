@@ -59,6 +59,10 @@
   "files.associations": {
     "helper.h": "c",
     "stdio.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "string.h": "c",
+    "catalog.h": "c",
+    "database.h": "c",
+    "sstream": "c"
   }
 }

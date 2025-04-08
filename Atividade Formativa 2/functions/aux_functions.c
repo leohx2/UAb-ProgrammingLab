@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void To_upper_str(char *s)
 {
@@ -21,7 +22,7 @@ void Remove_plus_signals(char *s)
 
 void Print_title_details(LCatalog *l_catalog)
 {
-  printf("\nMovie: %s\n", l_catalog->title);
+  printf("\nShow: %s\n", l_catalog->title);
   printf("Category: %s, duration: %d, PEGI: %s, views: %d\n", l_catalog->category, l_catalog->duration, l_catalog->pegi, l_catalog->views);
   printf("ID: %d\n", l_catalog->id);
 }
@@ -78,4 +79,33 @@ int Safe_answer()
 
   scanf(" %[^\n]", str);
   return atoi(str);
+}
+
+// the show PEGI can be 13 or 13+ or 16++++, we'll remove the + signal and return the value itself as an int
+int Pegi_atoi(char *pegi)
+{
+  while (pegi[strlen(pegi) - 1] == '+')
+    pegi[strlen(pegi) - 1] = '\0';
+
+  return atoi(pegi);
+}
+
+// mode 1: title, 2: Category
+char *Get_show_info(LCatalog *l_catalog, int id, int mode)
+{
+  LCatalog *aux = l_catalog;
+  char *str;
+
+  while (aux && aux->id != id)
+    aux = aux->next;
+
+  if (aux)
+  {
+    if (mode == 1)
+      str = strdup(aux->title);
+    else
+      str = strdup(aux->category);
+    return str;
+  }
+  return NULL;
 }

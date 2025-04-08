@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "../header/catalog.h"
 #include "../header/helper.h"
 #define MAXSTR 255

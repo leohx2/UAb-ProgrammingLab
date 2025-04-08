@@ -2,6 +2,7 @@
 #include "../header/helper.h"
 #include "../header/catalog.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #define MAXSTR 255
 

@@ -9,7 +9,6 @@
 #define MOVIES_REPORT 5 // How many movies to show during the report
 #define CATEGORIES_REPORT 3
 
-LViews *Streamed_shows(char *username, LViews *l_views, LCatalog *l_catalog, int *interactions_counter);
 LViews *Update_views(LViews *l_views, int title_id);
 LViews *Sort_views(LViews *l_views);
 void Print_report(LViews *l_views, LCatalog *l_catalog, LCategory *l_category, char *username, int h_interaction);
@@ -60,7 +59,7 @@ void Report(LCatalog *l_catalog)
 
     // This functions also keep track of how many interactions the user had with the system
     interaction_counter = 0;
-    l_views = Streamed_shows(username, l_views, l_catalog, &interaction_counter);
+    l_views = Streamed_shows(username, l_views, l_catalog, &interaction_counter, 1);
 
     // Keep tracking the highest-engagemente user
     if (interaction_counter > h_interaction)
@@ -91,7 +90,7 @@ void Print_report(LViews *l_views, LCatalog *l_catalog, LCategory *l_category, c
   int i = 1;
 
   views = l_views;
-  printf("\n--------------------------------------------------\n");
+  printf("\n---------------------------------------------------\n");
   printf("\t\tStreamFlix report!\n");
 
   printf("\n- Check out our top 5 most-streamed shows:\n");
@@ -116,10 +115,11 @@ void Print_report(LViews *l_views, LCatalog *l_catalog, LCategory *l_category, c
 
   printf("\n\n- Highest-engagemente user:\n");
   printf("\nCongratulations to %s, our top user with %d interactions!\n", username, h_interaction);
-  printf("\n--------------------------------------------------\n");
+  printf("\n---------------------------------------------------\n");
 }
 
-LViews *Streamed_shows(char *username, LViews *l_views, LCatalog *l_catalog, int *interactions_counter)
+// mode 1 to organize and update the shows and it's views, mode 2 to just list all the watched shows interactions from newest to oldest
+LViews *Streamed_shows(char *username, LViews *l_views, LCatalog *l_catalog, int *interactions_counter, int mode)
 {
   FILE *f_interactions;
   char str[MAXSTR], *token;
@@ -143,17 +143,24 @@ LViews *Streamed_shows(char *username, LViews *l_views, LCatalog *l_catalog, int
     // Get the action
     token = strtok(str, ",");
 
-    *interactions_counter += 1;
+    if (interactions_counter)
+      *interactions_counter += 1;
     if (token[0] == 'w')
     {
       // Get the title ID
       token = strtok(NULL, ",");
 
       if (Valid_show_id(l_catalog, atoi(token)))
-        l_views = Update_views(l_views, atoi(token));
+      {
+        if (mode == 1)
+          l_views = Update_views(l_views, atoi(token));
+        else
+          l_views = Add_new_view(l_views, atoi(token), 1);
+      }
     }
   }
   fclose(f_interactions);
+
   return l_views;
 }
 
