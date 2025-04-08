@@ -39,10 +39,10 @@ void Recommendation(LCatalog *l_catalog, char *username)
   Avarage_show(l_views, l_catalog, &avg_durantion, &avg_pegi);
   l_recommendation = Recommendation_algorithm(l_views, l_catalog, avg_durantion, avg_pegi);
   l_recommendation = Sort_recommendations(l_recommendation);
-  printf("\n4\n");
+  printf("\n5\n");
 
   display_recommendation = l_recommendation;
-  printf("\n5\n");
+  printf("\n6\n");
   while (display_recommendation && i <= MAX_RECOMMENDATION)
   {
     printf("\n%d:\nShow: %s\nCategory: %s\nID: %d\n", i, display_recommendation->show_name, display_recommendation->categories, display_recommendation->show_id);
@@ -251,20 +251,24 @@ LRecommendation *Sort_recommendations(LRecommendation *l_recommendation)
     printf("2\n");
 
     if (recommendation->points < recommendation->next->points)
-      printf("3\n");
     {
+      printf("3\n");
       aux = Add_new_recommendation(aux, recommendation->points, recommendation->show_id, recommendation->show_name, recommendation->categories);
       recommendation->points = recommendation->next->points;
       recommendation->show_id = recommendation->next->show_id;
       free(recommendation->show_name);
       free(recommendation->categories);
+      printf("3.1\n");
       recommendation->show_name = strdup(recommendation->next->show_name);
       recommendation->categories = strdup(recommendation->next->categories);
 
+      printf("3.2\n");
       recommendation->next->points = aux->points;
       recommendation->next->show_id = aux->show_id;
+      printf("3.3\n");
       free(recommendation->next->show_name);
       free(recommendation->next->categories);
+      printf("3.4\n");
       recommendation->next->show_name = strdup(aux->show_name);
       recommendation->next->categories = strdup(aux->categories);
 
