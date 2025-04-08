@@ -75,7 +75,7 @@ FILE *Open_interaction_csv(char *path, char *username, char *mode)
 
 int Safe_answer()
 {
-  char *str;
+  char str[10];
 
   scanf(" %[^\n]", str);
   return atoi(str);

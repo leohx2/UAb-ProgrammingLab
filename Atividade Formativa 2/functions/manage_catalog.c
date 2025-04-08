@@ -12,6 +12,8 @@ LCatalog *Save_on_list(FILE *f, LCatalog *l_catalog)
   char str[MAXSTR], *token;
   LCatalog *aux;
 
+  aux = (LCatalog *)malloc(sizeof(LCatalog));
+
   fgets(str, MAXSTR, f);
 
   while (!feof(f))
@@ -68,6 +70,7 @@ LCatalog *Save_on_list(FILE *f, LCatalog *l_catalog)
     }
     l_catalog = Add_new(l_catalog, aux);
   }
+  free(aux);
   return l_catalog;
 }
 
