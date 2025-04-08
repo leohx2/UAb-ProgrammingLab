@@ -29,11 +29,16 @@ void Recommendation(LCatalog *l_catalog, char *username)
 
   // Recommendation based on the last 5 watched shows.
   l_views = Streamed_shows(username, l_views, l_catalog, NULL, 2);
+  printf("\n1\n");
   Avarage_show(l_views, l_catalog, &avg_durantion, &avg_pegi);
+  printf("\n2\n");
   l_recommendation = Recommendation_algorithm(l_views, l_catalog, avg_durantion, avg_pegi);
+  printf("\n3\n");
   l_recommendation = Sort_recommendations(l_recommendation);
+  printf("\n4\n");
 
   display_recommendation = l_recommendation;
+  printf("\n5\n");
   while (display_recommendation && i <= MAX_RECOMMENDATION)
   {
     printf("\n%d:\nShow: %s\nCategory: %s\nID: %d\n", i, display_recommendation->show_name, display_recommendation->categories, display_recommendation->show_id);
