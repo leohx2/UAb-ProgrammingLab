@@ -36,11 +36,8 @@ void Recommendation(LCatalog *l_catalog, char *username)
     return;
   }
 
-  printf("\n1\n");
   Avarage_show(l_views, l_catalog, &avg_durantion, &avg_pegi);
-  printf("\n2\n");
   l_recommendation = Recommendation_algorithm(l_views, l_catalog, avg_durantion, avg_pegi);
-  printf("\n3\n");
   l_recommendation = Sort_recommendations(l_recommendation);
   printf("\n4\n");
 
@@ -247,10 +244,14 @@ LRecommendation *Sort_recommendations(LRecommendation *l_recommendation)
 
   aux = NULL;
   recommendation = l_recommendation;
+  printf("\n1\n");
 
   while (recommendation && recommendation->next)
   {
+    printf("2\n");
+
     if (recommendation->points < recommendation->next->points)
+      printf("3\n");
     {
       aux = Add_new_recommendation(aux, recommendation->points, recommendation->show_id, recommendation->show_name, recommendation->categories);
       recommendation->points = recommendation->next->points;
@@ -272,6 +273,7 @@ LRecommendation *Sort_recommendations(LRecommendation *l_recommendation)
 
     recommendation = recommendation->next;
   }
+  printf("\n4\n");
 
   if (counter > 0)
     l_recommendation = Sort_recommendations(l_recommendation);
