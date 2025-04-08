@@ -30,7 +30,7 @@ int Print_matchs(LCatalog *aux, char *user_input, char holder[MAXSTR], int mode,
   return counter;
 }
 
-// Divide in two parts, exactly match and containing the string
+// Divide in two parts, exact match and containing the string
 // mode 1 for title, 2 for category
 void Search_title_or_category(LCatalog *l_catalog, int mode)
 {
@@ -45,13 +45,13 @@ void Search_title_or_category(LCatalog *l_catalog, int mode)
 
   To_upper_str(user_input);
 
-  // Exactly match
+  // match
   printf("\n------------------------------------------------------------");
-  printf("\nThe search results show the following exactly match:\n");
+  printf("\nThe search results show the following match:\n");
   aux = l_catalog;
 
   if (Print_matchs(aux, user_input, holder, 1, mode) == 0)
-    printf("The exactly match was not found.\n");
+    printf("No match found\n");
   printf("\n------------------------------------------------------------");
 
   printf("\n------------------------------------------------------------");
@@ -102,16 +102,16 @@ void Search_PEGI(LCatalog *l_catalog)
   Remove_plus_signals(user_input);
   input_pegi = atoi(user_input);
 
-  // Exactly match
+  // match
   printf("\n------------------------------------------------------------");
-  printf("\nThe search results show the following exactly age rating match:\n");
+  printf("\nThe search results show the following age rating match:\n");
 
   aux = l_catalog;
   if (Print_pegi_matchs(aux, input_pegi, 1) == 0)
-    printf("The exactly match was not found.\n");
+    printf("No match found\n");
   printf("\n------------------------------------------------------------");
 
-  printf("\nWould you like to have a list of movies with a lower age rating as well?\nAnswer(y/n): ");
+  printf("\nWould you like to have a list of movies with a lower age rating?\nAnswer(y/n): ");
   scanf(" %9[^\n]", answer);
 
   To_upper_str(answer);

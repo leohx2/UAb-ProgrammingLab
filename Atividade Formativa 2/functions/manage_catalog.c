@@ -88,6 +88,12 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     {
       printf("\nCurrent title: %s\nNew title (commas are not allowed): ", l_catalog->title);
       scanf(" %[^\n]", aux);
+      while (strstr(aux, ","))
+      {
+        printf("\nInvalid title.\n");
+        printf("\nNew Title (plase, do not use commas): ");
+        scanf(" %[^\n]", aux);
+      }
       if (l_catalog->title)
         free(l_catalog->title);
       l_catalog->title = strdup(aux);
@@ -96,6 +102,12 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     {
       printf("\nCurrent category: %s\nNew category (if there is more than one category, use a slash (/) as a separator): ", l_catalog->category);
       scanf(" %[^\n]", aux);
+      while (strstr(aux, ","))
+      {
+        printf("\nInvalid Category/categories\n");
+        printf("\nNew category (if there is more than one category, use a slash (/) as a separator): ");
+        scanf(" %[^\n]", aux);
+      }
       if (l_catalog->category)
         free(l_catalog->category);
       l_catalog->category = strdup(aux);
@@ -103,16 +115,24 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     if (content_to_edit == 3 || content_to_edit == 6)
     {
       printf("\nCurrent duration: %d\nNew duration (only positive numbers are allowed): ", l_catalog->duration);
-      scanf("%d", &int_aux);
-      if (int_aux <= 0)
+      int_aux = Safe_answer();
+      while (int_aux <= 0)
+      {
         printf("Format not supported, only numbers (greater than 0) allowed\n");
-      else
-        l_catalog->duration = int_aux;
+        int_aux = Safe_answer();
+      }
+      l_catalog->duration = int_aux;
     }
     if (content_to_edit == 4 || content_to_edit == 6)
     {
       printf("\nCurrent PEGI: %s\nNew PEGI: ", l_catalog->pegi);
       scanf(" %[^\n]", aux);
+      while (strstr(aux, ","))
+      {
+        printf("\nInvalid PEGI, do not use commas\n");
+        printf("\nNew PEGI: ");
+        scanf(" %[^\n]", aux);
+      }
       if (l_catalog->pegi)
         free(l_catalog->pegi);
       l_catalog->pegi = strdup(aux);
@@ -120,7 +140,7 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     if (content_to_edit == 5 || content_to_edit == 6)
     {
       printf("\nCurrent view count: %d\nNew view count: ", l_catalog->views);
-      scanf("%d", &int_aux);
+      int_aux = Safe_answer();
       l_catalog->views = atoi(aux);
     }
   }
