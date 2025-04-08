@@ -29,6 +29,13 @@ void Recommendation(LCatalog *l_catalog, char *username)
 
   // Recommendation based on the last 5 watched shows.
   l_views = Streamed_shows(username, l_views, l_catalog, NULL, 2);
+  if (l_views == NULL)
+  {
+    printf("\nWe'll give better recommendations after you watch a few shows! Come back later, you won't regret it! :)\n");
+    printf("\n-----------------------------------------\n");
+    return;
+  }
+
   printf("\n1\n");
   Avarage_show(l_views, l_catalog, &avg_durantion, &avg_pegi);
   printf("\n2\n");
@@ -45,8 +52,6 @@ void Recommendation(LCatalog *l_catalog, char *username)
     display_recommendation = display_recommendation->next;
     i++;
   }
-  if (i == 1)
-    printf("\nWe'll give better recommendations after you watch a few shows! Come back later, you won't regret it! :)\n");
   printf("\n-----------------------------------------\n");
   l_views = Free_all_views(l_views);
   l_recommendation = Free_all_recommendations(l_recommendation);
