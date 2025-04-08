@@ -1,5 +1,6 @@
 #include "../header/catalog.h"
 #include "../header/helper.h"
+#include "../header/database.h"
 #include <stdlib.h>
 
 // The prototype functions bellow will be used here, and only in this file, that's why
@@ -13,8 +14,8 @@ LCatalog *Initial_menu(TLists *t_listas, char *file_name, TFiles *t_files, char 
 
   while (user_choice != -1)
   {
-    printf("\nPlease choose one of the options below\n 1 - Choose a title\n 2 - Show all titles.\n 3 - Search.\n 4 - Add a new title.");
-    printf("\n 5 - Remove a title.\n 6 - Edit a title.\n 7 - Save.\n 8 - See my playlists\n 9 - Create a new playlist\n10 - Delete a playlist\n11 - StreamFlix recommendation\n-1 - Exit.\n");
+    printf("\nPlease choose one of the options below\n 1 - Choose a show\n 2 - Display all shows.\n 3 - Search.\n 4 - Add a new show.");
+    printf("\n 5 - Remove a show.\n 6 - Edit a show.\n 7 - Save.\n 8 - See my playlists\n 9 - Create a new playlist\n10 - Delete a playlist\n11 - StreamFlix recommendation\n-1 - Exit.\n");
     printf("Option: ");
     user_choice = Safe_answer();
 
@@ -81,7 +82,10 @@ LCatalog *Initial_menu(TLists *t_listas, char *file_name, TFiles *t_files, char 
     }
     case 11:
     {
-      printf("TODO... Recommendation\n");
+      // To make sure the interactions file is updated we'll close and reopen it.
+      fclose(t_files->interactions);
+      Recommendation(t_listas->l_catalog, username);
+      t_files->interactions = Open_interaction_csv("./database csv/interaction_", username, "r+");
       break;
     }
     default:

@@ -2,6 +2,7 @@
 #include "header/helper.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define MAXSTR 255
 
@@ -27,10 +28,9 @@ TUser *Parse_user(int id, char *username)
 // mode: 'f' to login, 'c' to create
 TUser *Find_or_create_user(FILE *f_user, char *username, int mode)
 {
-  char s[MAXSTR], *token, *holder;
-  int bigger_id = 0, user_id, choice;
+  char s[MAXSTR], *token;
+  int bigger_id = 0, user_id;
   TUser *user;
-  FILE *newUser;
 
   // Ignore the fist line, that will tell us the file order, in that case "user_id,username"
   fgets(s, MAXSTR, f_user);
@@ -91,7 +91,6 @@ TUser *Login(FILE *f_user)
 
   while (user_choice < 1 || user_choice > 2)
   {
-    printf("\n------------- Please choose a option -------------\n");
     printf("\n1 - Login (no password required)\n2 - Create a new profile\nOption: ");
     user_choice = Safe_answer();
     if (user_choice < 1 || user_choice > 2)

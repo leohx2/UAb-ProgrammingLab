@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "../header/catalog.h"
 #include "../header/helper.h"
 #define MAXSTR 255
@@ -90,7 +91,7 @@ int Edit_item(LCatalog *l_catalog, int content_to_edit, int id)
     }
     if (content_to_edit == 2 || content_to_edit == 6)
     {
-      printf("\nCurrent category: %s\nNew category (if there is more than one category, use a backslash (\\) as a separator): ", l_catalog->category);
+      printf("\nCurrent category: %s\nNew category (if there is more than one category, use a slash (/) as a separator): ", l_catalog->category);
       scanf(" %[^\n]", aux);
       if (l_catalog->category)
         free(l_catalog->category);
@@ -129,7 +130,6 @@ LCatalog *User_add_new_title(LCatalog *l_catalog)
 {
   LCatalog *aux;
   char s[3][MAXSTR];
-  int i;
 
   aux = (LCatalog *)malloc(sizeof(LCatalog));
   if (aux == NULL)
@@ -138,23 +138,41 @@ LCatalog *User_add_new_title(LCatalog *l_catalog)
     return l_catalog;
   }
 
-  printf("\nTitle: ");
+  printf("\nTitle (plase, do not use commas): ");
   scanf(" %[^\n]", s[0]);
+  while (strstr(s[0], ","))
+  {
+    printf("\nInvalid title.\n");
+    printf("\nTitle (plase, do not use commas): ");
+    scanf(" %[^\n]", s[0]);
+  }
   aux->title = strdup(s[0]);
 
-  printf("Category (don't use commas, use '\\' instead if there's more than one): ");
+  printf("Category (don't use commas, use '/' instead if there's more than one): ");
   scanf(" %[^\n]", s[1]);
+  while (strstr(s[1], ","))
+  {
+    printf("\nInvalid Category/categories\n");
+    printf("\nCategory (don't use commas, use '/' instead if there's more than one): ");
+    scanf(" %[^\n]", s[1]);
+  }
   aux->category = strdup(s[1]);
 
   printf("Duration (numbers, greater than 0, only): ");
-  scanf("%d", &aux->duration);
+  aux->duration = Safe_answer();
 
   printf("PEGI: ");
   scanf(" %[^\n]", s[2]);
+  while (strstr(s[2], ","))
+  {
+    printf("\nInvalid PEGI, please don't use commas.\n");
+    printf("\nPEGI: ");
+    scanf(" %[^\n]", s[2]);
+  }
   aux->pegi = strdup(s[2]);
 
   printf("Current number of views: ");
-  scanf("%d", &aux->views);
+  aux->views = Safe_answer();
 
   aux->id = Get_bigger_id(l_catalog) + 1;
   l_catalog = Add_new(l_catalog, aux);
@@ -218,4 +236,31 @@ FILE *Save_Catalog(LCatalog *l_catalog, FILE *f, char *fileName)
   }
   fclose(f);
   return fopen(fileName, "r");
+}
+
+void Print_Movie_name(LCatalog *l_catalog, int id)
+{
+  LCatalog *aux;
+
+  aux = l_catalog;
+  while (aux && aux->id != id)
+    aux = aux->next;
+
+  if (aux)
+    printf("%s", aux->title);
+}
+
+int Valid_show_id(LCatalog *l_catalog, int id)
+{
+  LCatalog *aux;
+
+  aux = l_catalog;
+  while (aux)
+  {
+    if (aux->id == id)
+      return 1;
+    aux = aux->next;
+  }
+
+  return 0;
 }

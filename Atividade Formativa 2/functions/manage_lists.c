@@ -206,3 +206,138 @@ LFavorite *Free_all_playlists(LFavorite *l_playlist)
 
   return l_playlist;
 }
+
+LViews *Add_new_view(LViews *l_views, int title_id, int views)
+{
+  LViews *new;
+
+  new = (LViews *)malloc(sizeof(LViews));
+  if (new == NULL)
+  {
+    printf("Error. Memory allocation views\n");
+    return NULL;
+  }
+
+  new->show_id = title_id;
+  new->views = views;
+  new->next = l_views;
+
+  return new;
+}
+
+LViews *Free_all_views(LViews *l_views)
+{
+  LViews *aux;
+
+  while (l_views)
+  {
+    aux = l_views->next;
+    free(l_views);
+    l_views = aux;
+  }
+
+  return l_views;
+}
+
+LCategory *Add_new_category(LCategory *l_category, char *category, int views)
+{
+  LCategory *new;
+
+  new = (LCategory *)malloc(sizeof(LCategory));
+  if (new == NULL)
+  {
+    printf("Error. Memory allocation category\n");
+    return NULL;
+  }
+
+  new->counter = views;
+  new->category = (char *)malloc(sizeof(char) * strlen(category) + 1);
+  if (new->category == NULL)
+  {
+    printf("Error. Memory allocation new->category\n");
+    return NULL;
+  }
+  strcpy(new->category, category);
+  new->next = l_category;
+  return new;
+}
+
+LCategory *Free_category(LCategory *l_category)
+{
+  LCategory *aux;
+
+  aux = l_category->next;
+  if (l_category->category)
+    free(l_category->category);
+  free(l_category);
+
+  return aux;
+}
+
+LCategory *Free_all_categories(LCategory *l_category)
+{
+  while (l_category)
+    l_category = Free_category(l_category);
+
+  return l_category;
+}
+
+LRecommendation *Add_new_recommendation(LRecommendation *l_recommendation, int points, int show_id, char *show_name, char *categories)
+{
+  LRecommendation *new;
+
+  new = (LRecommendation *)malloc(sizeof(LRecommendation));
+
+  if (new == NULL)
+  {
+    printf("Error. Memory allocation recommendation");
+    return l_recommendation;
+  }
+
+  new->points = points;
+  new->show_id = show_id;
+  new->next = l_recommendation;
+
+  new->show_name = (char *)malloc(sizeof(char) * strlen(show_name));
+  if (new->show_name == NULL)
+  {
+    printf("Error. Memory allocation recommendation, show_name");
+    return l_recommendation;
+  }
+  new->categories = (char *)malloc(sizeof(char) * strlen(categories));
+  if (new->categories == NULL)
+  {
+    printf("Error. Memory allocation recommendation, categories");
+    return l_recommendation;
+  }
+  strcpy(new->show_name, show_name);
+  strcpy(new->categories, categories);
+
+  return new;
+}
+
+LRecommendation *Free_recommendation(LRecommendation *l_recommendation)
+{
+  LRecommendation *aux;
+
+  while (l_recommendation)
+  {
+    aux = l_recommendation->next;
+    if (l_recommendation->show_name)
+      free(l_recommendation->show_name);
+    if (l_recommendation->categories)
+      free(l_recommendation->categories);
+    free(l_recommendation);
+    l_recommendation = aux;
+  }
+
+  return l_recommendation;
+}
+
+LRecommendation *Free_all_recommendations(LRecommendation *l_recommendation)
+{
+  while (l_recommendation)
+    l_recommendation = Free_recommendation(l_recommendation);
+
+  return l_recommendation;
+}

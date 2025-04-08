@@ -3,6 +3,7 @@
 #include "../header/catalog.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define MAXSTR 255
 
@@ -89,11 +90,11 @@ LInteractions *Update_Interactions(LInteractions *l_interactions, int action, in
   return l_interactions;
 }
 
-LInteractions *Watching(LInteractions *l_interactions, FILE *f_interactions, char *movie_name, int movie_id)
+LInteractions *Watching(LInteractions *l_interactions, FILE *f_interactions, LCatalog *l_catalog, int movie_id)
 {
   int user_choice = 0, paused = 0;
   printf("\n-----------------------------------------\n");
-  printf("You're watching '%s'\n", movie_name);
+  printf("You're watching '%s'\n", l_catalog->title);
 
   // Options -> 1-> Pause, 1-> Resume (if it's paused), 2-> mark as done, 3-> exit to main menu
   while (user_choice != 3)
@@ -112,8 +113,9 @@ LInteractions *Watching(LInteractions *l_interactions, FILE *f_interactions, cha
     }
     else if (user_choice == 2)
     {
-      printf("\nThank you for watching '%s' :)\n", movie_name);
+      printf("\nThank you for watching '%s' :)\n", l_catalog->title);
       printf("\n-----------------------------------------\n");
+      l_catalog->views++;
       l_interactions = Update_Interactions(l_interactions, 'w', movie_id, f_interactions);
       return l_interactions;
     }
@@ -200,7 +202,7 @@ LInteractions *Handle_movies_choices(TLists *t_lists, TFiles *t_files, char curr
       t_lists->l_interactions = Update_Interactions(t_lists->l_interactions, user_choice, title_id, t_files->interactions);
   }
   if (user_choice == 1 || user_choice == 4)
-    t_lists->l_interactions = Watching(t_lists->l_interactions, t_files->interactions, t_lists->l_catalog->title, title_id);
+    t_lists->l_interactions = Watching(t_lists->l_interactions, t_files->interactions, t_lists->l_catalog, title_id);
 
   // Increase de views numbers when mark as done.
   if (user_choice == 5)
