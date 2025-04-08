@@ -238,7 +238,11 @@ void SavePlaylistFile(LFavorite *l_playlist, FILE *f_playlist, char *username)
   LFavorite *aux;
 
   fclose(f_playlist);
-  f_playlist = Open_interaction_csv("./database csv/lists_", username, "w");
+#ifdef _WIN32
+  f_playlist = Open_interaction_csv(".\\database_csv\\lists_", username, "w");
+#else
+  f_playlist = Open_interaction_csv("./database_csv/lists_", username, "w");
+#endif
   if (f_playlist == NULL)
   {
     printf("ERROR, file can't be re-opened\n");

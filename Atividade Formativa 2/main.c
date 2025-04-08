@@ -22,7 +22,7 @@ int main()
   if (t_lists == NULL || t_files == NULL)
   {
     printf("ERROR, memory allocation.\n");
-    return 0;
+    return EXIT_FAILURE;
   }
 
   t_lists->l_catalog = NULL;
@@ -31,17 +31,21 @@ int main()
   // To work properly, the CSV file must have the follwing sintax:
   // Title, Category, Duration (min), Recommended classification age, View.
   t_files->movies = fopen("movies_data.csv", "r");
-  f_user = fopen("./database csv/user.csv", "r+");
+#ifdef _WIN32
+  f_user = fopen(".\\database_csv\\user.csv", "r+");
+#else
+  f_user = fopen("./database_csv/user.csv", "r+");
+#endif
 
   if (t_files->movies == NULL)
   {
     printf("Error. File 'movies_data.csv' not found.\n");
-    return 0;
+    return EXIT_FAILURE;
   }
   if (f_user == NULL)
   {
     printf("Error. user.csv not found.\n");
-    return 0;
+    return EXIT_FAILURE;
   }
 
   t_lists->l_catalog = Save_on_list(t_files->movies, t_lists->l_catalog);
@@ -63,15 +67,23 @@ int main()
   fclose(f_user);
   printf("\n____________Welcome to Streamflix, %s!____________\n", t_user->username);
 
-  // Load the user interactions in the list
-  t_files->interactions = Open_interaction_csv("./database csv/interaction_", t_user->username, "r+");
+// Load the user interactions in the list
+#ifdef _WIN32
+  t_files->interactions = Open_interaction_csv(".\\database_csv\\interaction_", t_user->username, "r+");
+#else
+  t_files->interactions = Open_interaction_csv("./database_csv/interaction_", t_user->username, "r+");
+#endif
   if (t_files->interactions == NULL)
   {
     printf("Error, user database not found.\n");
     fclose(t_files->movies);
   }
 
-  t_files->favorites = Open_interaction_csv("./database csv/lists_", t_user->username, "r+");
+#ifdef _WIN32
+  t_files->favorites = Open_interaction_csv(".\\database_csv\\lists_", t_user->username, "r+");
+#else
+  t_files->favorites = Open_interaction_csv("./database_csv/lists_", t_user->username, "r+");
+#endif
   if (t_files->favorites == NULL)
   {
     printf("Error, user database not found.\n");

@@ -75,8 +75,13 @@ TUser *Find_or_create_user(FILE *f_user, char *username, int mode)
   {
     // Create a new user and csv file for that user
     fprintf(f_user, "\n%d,%s", ++bigger_id, username);
+#ifdef _WIN32
+    Create_new_csv(".\\database csv\\interaction_", username, 1);
+    Create_new_csv(".\\database csv\\lists_", username, 2);
+#else
     Create_new_csv("./database csv/interaction_", username, 1);
     Create_new_csv("./database csv/lists_", username, 2);
+#endif
     user = Parse_user(bigger_id, username);
   }
   return user;

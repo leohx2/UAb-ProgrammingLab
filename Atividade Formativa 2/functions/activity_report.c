@@ -33,7 +33,11 @@ void Report(LCatalog *l_catalog)
   l_views = NULL;
   l_category = NULL;
   h_engagement_user = NULL;
-  f_users = fopen("./database csv/user.csv", "r");
+#ifdef _WIN32
+  f_users = fopen(".\\database_csv\\user.csv", "r");
+#else
+  f_users = fopen("./database_csv/user.csv", "r");
+#endif
 
   if (f_users == NULL)
   {
@@ -124,7 +128,11 @@ LViews *Streamed_shows(char *username, LViews *l_views, LCatalog *l_catalog, int
   FILE *f_interactions;
   char str[MAXSTR], *token;
 
-  f_interactions = Open_interaction_csv("./database csv/interaction_", username, "r");
+#ifdef _WIN32
+  f_interactions = Open_interaction_csv(".\\database_csv\\interaction_", username, "r");
+#else
+  f_interactions = Open_interaction_csv("./database_csv/interaction_", username, "r");
+#endif
   if (f_interactions == NULL)
   {
     printf("Error. File not found (report system).\n");

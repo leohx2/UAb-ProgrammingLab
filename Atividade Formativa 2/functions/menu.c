@@ -85,7 +85,11 @@ LCatalog *Initial_menu(TLists *t_listas, char *file_name, TFiles *t_files, char 
       // To make sure the interactions file is updated we'll close and reopen it.
       fclose(t_files->interactions);
       Recommendation(t_listas->l_catalog, username);
-      t_files->interactions = Open_interaction_csv("./database csv/interaction_", username, "r+");
+#ifdef _WIN32
+      t_files->interactions = Open_interaction_csv(".\\database_csv\\interaction_", username, "r+");
+#else
+      t_files->interactions = Open_interaction_csv("./database_csv/interaction_", username, "r+");
+#endif
       break;
     }
     default:
