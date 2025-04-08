@@ -39,10 +39,8 @@ void Recommendation(LCatalog *l_catalog, char *username)
   Avarage_show(l_views, l_catalog, &avg_durantion, &avg_pegi);
   l_recommendation = Recommendation_algorithm(l_views, l_catalog, avg_durantion, avg_pegi);
   l_recommendation = Sort_recommendations(l_recommendation);
-  printf("\n5\n");
 
   display_recommendation = l_recommendation;
-  printf("\n6\n");
   while (display_recommendation && i <= MAX_RECOMMENDATION)
   {
     printf("\n%d:\nShow: %s\nCategory: %s\nID: %d\n", i, display_recommendation->show_name, display_recommendation->categories, display_recommendation->show_id);
