@@ -14,9 +14,9 @@ LCatalog *Add_title(LCatalog *list, LCatalog *aux)
 
   if (novo != NULL)
   {
-    novo->title = (char *)malloc(sizeof(char) * strlen(aux->title) + 1);
-    novo->category = (char *)malloc(sizeof(char) * strlen(aux->category) + 1);
-    novo->pegi = (char *)malloc(sizeof(char) * strlen(aux->pegi) + 1);
+    novo->title = (char *)malloc(sizeof(char) * strlen(aux->title) + 2);
+    novo->category = (char *)malloc(sizeof(char) * strlen(aux->category) + 2);
+    novo->pegi = (char *)malloc(sizeof(char) * strlen(aux->pegi) + 2);
 
     if (novo->category == NULL || novo->title == NULL || novo->pegi == NULL)
     {
@@ -151,11 +151,11 @@ LFavorite *Add_new_favorite(LFavorite *l_playlist, int list_id, int title_id, ch
   }
   new->id = list_id;
   new->title_id = title_id;
-  new->name = (char *)malloc(sizeof(char) * strlen(list_name));
+  new->name = (char *)malloc(sizeof(char) * strlen(list_name) + 2);
   if (list_name[strlen(list_name) - 1] == '\n')
     list_name[strlen(list_name) - 1] = '\0';
   strcpy(new->name, list_name);
-  new->movie_name = (char *)malloc(sizeof(char) * strlen(movie_name));
+  new->movie_name = (char *)malloc(sizeof(char) * strlen(movie_name) + 2);
   if (movie_name[strlen(movie_name) - 1] == '\n')
     movie_name[strlen(movie_name) - 1] = '\0';
   strcpy(new->movie_name, movie_name);
@@ -251,7 +251,7 @@ LCategory *Add_new_category(LCategory *l_category, char *category, int views)
   }
 
   new->counter = views;
-  new->category = (char *)malloc(sizeof(char) * strlen(category) + 1);
+  new->category = (char *)malloc(sizeof(char) * strlen(category) + 2);
   if (new->category == NULL)
   {
     printf("Error. Memory allocation new->category\n");
@@ -298,13 +298,13 @@ LRecommendation *Add_new_recommendation(LRecommendation *l_recommendation, int p
   new->show_id = show_id;
   new->next = l_recommendation;
 
-  new->show_name = (char *)malloc(sizeof(char) * strlen(show_name));
+  new->show_name = (char *)malloc(sizeof(char) * strlen(show_name) + 2);
   if (new->show_name == NULL)
   {
     printf("Error. Memory allocation recommendation, show_name");
     return l_recommendation;
   }
-  new->categories = (char *)malloc(sizeof(char) * strlen(categories));
+  new->categories = (char *)malloc(sizeof(char) * strlen(categories) + 2);
   if (new->categories == NULL)
   {
     printf("Error. Memory allocation recommendation, categories");

@@ -14,7 +14,7 @@ TUser *Parse_user(int id, char *username)
   if (user == NULL)
     return NULL;
 
-  user->username = (char *)malloc(sizeof(char) * strlen(username) + 1);
+  user->username = (char *)malloc(sizeof(char) * strlen(username) + 2);
   if (user->username == NULL)
   {
     free(user);
