@@ -46,7 +46,7 @@ void Create_new_csv(char *path, char *username, int mode)
   char *holder;
   FILE *new_user;
 
-  holder = (char *)malloc(sizeof(char) * strlen(path) + strlen(username) + 4);
+  holder = (char *)malloc(sizeof(char) * strlen(path) + strlen(username) + 10);
   holder[0] = '\0';
   strcat(holder, path);
   strcat(holder, username);
