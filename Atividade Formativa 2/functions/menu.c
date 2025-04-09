@@ -3,7 +3,7 @@
 #include "../header/database.h"
 #include <stdlib.h>
 
-// The prototype functions bellow will be used here, and only in this file, that's why
+// The prototype functions below will be used here, and only in this file, that's why
 // it's not in the header file with the remaining functions.
 void Edit_menu(LCatalog *l_catalog);
 void Search_menu(LCatalog *l_catalog);
@@ -14,8 +14,8 @@ LCatalog *Initial_menu(TLists *t_listas, char *file_name, TFiles *t_files, char 
 
   while (user_choice != -1)
   {
-    printf("\nPlease choose one of the options below\n 1 - Choose a show\n 2 - Display all shows.\n 3 - Search.\n 4 - Add a new show.");
-    printf("\n 5 - Remove a show.\n 6 - Edit a show.\n 7 - Save.\n 8 - See my playlists\n 9 - Create a new playlist\n10 - Delete a playlist\n11 - StreamFlix recommendation\n-1 - Exit.\n");
+    printf("\nPlease choose one of the options below\n 1 - Choose a show\n 2 - Display all shows\n 3 - Search\n 4 - Add a new show");
+    printf("\n 5 - Remove a show\n 6 - Edit a show\n 7 - Save\n 8 - See my playlists\n 9 - Create a new playlist\n10 - Delete a playlist\n11 - StreamFlix recommendation\n-1 - Exit\n");
     printf("Option: ");
     user_choice = Safe_answer();
 
@@ -121,7 +121,7 @@ void Search_menu(LCatalog *l_catalog)
 {
   int user_choice;
 
-  printf("\nChoose one of the options bellow:\n");
+  printf("\nChoose one of the options below:\n");
   printf("Search by\n1 - Title\n2 - Category\n3 - Age Rating\n");
   printf("option:");
   user_choice = Safe_answer();

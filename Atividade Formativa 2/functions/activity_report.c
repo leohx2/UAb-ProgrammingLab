@@ -65,7 +65,7 @@ void Report(LCatalog *l_catalog)
     interaction_counter = 0;
     l_views = Streamed_shows(username, l_views, l_catalog, &interaction_counter, 1);
 
-    // Keep tracking the highest-engagemente user
+    // Keep tracking the highest-engagement user
     if (interaction_counter > h_interaction)
     {
       h_interaction = interaction_counter;
@@ -117,7 +117,7 @@ void Print_report(LViews *l_views, LCatalog *l_catalog, LCategory *l_category, c
     i++;
   }
 
-  printf("\n\n- Highest-engagemente user:\n");
+  printf("\n\n- Highest-engagement user:\n");
   printf("\nCongratulations to %s, our top user with %d interactions!\n", username, h_interaction);
   printf("\n---------------------------------------------------\n");
 }
