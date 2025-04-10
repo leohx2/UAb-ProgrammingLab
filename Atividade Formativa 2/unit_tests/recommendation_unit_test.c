@@ -73,7 +73,7 @@ int main()
   // fclose(f_interaction);
   // f_interaction = Open_interactions(s);
 
-  printf("\n\n*Test 5/5 -> Recommendation for a new user, with no movie history:\n");
+  printf("\n\n*Test 5/5 -> Recommendation for a new user, with movie history:\n");
   Recommendation(l_catalog, s);
 
   fclose(f_movies);
