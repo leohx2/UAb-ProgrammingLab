@@ -61,6 +61,7 @@ int Command_verify(char *input)
   // the create and move instructions are different, create has 2 coordinates plus width and height, and moove has 2 coordinates and a position.
   printf("Testing token: %s\n", token);
   // TODO -> verificação das coordenadas!
+  // TODO -> Verificação do comando para as coordenadas.
   // TODO -> verificar se há mais argumentos do que o necessário.
   return EXIT_SUCCESS;
 }
