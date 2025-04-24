@@ -2,5 +2,20 @@
 #define HELPER_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct
+{
+  char command; // can be 'c', 'l' or 'r' for create, move left and move right.
+  int x;
+  int y;
+  int l; // width
+  int h; // height
+  int p; // number of positions to move.
+} SCoordinates;
+
+void Str_to_lower(char *s);
+void Get_str_input(char *input);
 
 #endif
