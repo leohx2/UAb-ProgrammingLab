@@ -17,3 +17,12 @@ void Get_str_input(char *input)
   if (input[strlen(input) - 1] == '\n')
     input[strlen(input) - 1] = '\0';
 }
+
+void Initialize_matrix(int m[MAX_LINES][MAX_COL])
+{
+  int l, c;
+
+  for (l = 0; l < MAX_LINES; l++)
+    for (c = 0; c < MAX_COL; c++)
+      m[l][c] = 0;
+}

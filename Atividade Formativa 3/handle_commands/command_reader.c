@@ -66,6 +66,12 @@ int Command_verify(char *input, SCoordinates *s_coordinates)
   // The 2nd part of our command can be "x,y+l,h" or "x,y+p"
   token = strtok(NULL, " ");
 
+  if (token == NULL)
+  {
+    printf("\nInvalid, missing coordinates\n");
+    return EXIT_FAILURE;
+  }
+
   strcpy(token_backup, token);
   if (Valid_amount_of_arguments(token_backup) == EXIT_FAILURE)
     return EXIT_FAILURE;
