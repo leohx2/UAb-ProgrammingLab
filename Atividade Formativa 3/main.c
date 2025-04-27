@@ -26,7 +26,7 @@ int main()
         l_rect = Add_rect(l_rect, s_coordinates);
     }
     else
-      printf("TODO -> Move rectangle");
+      Move_rectangle(l_rect, s_coordinates);
     Update_rect(l_rect);
     Update_matrix(matrix, l_rect);
     Draw_matrix(matrix);

@@ -55,21 +55,57 @@ void Draw_matrix(int m[MAX_LINES][MAX_COL])
 // When creating id must be 0.
 int Valid_action(LRect *l_rect, int x, int y, int h, int l, int id)
 {
+  LRect *aux = l_rect;
+  int valid;
+
+  while (aux)
+  {
+    if (id != aux->id)
+    {
+      valid = (x + l <= aux->x) || (x >= aux->x + aux->l) || (y + h <= aux->y) || (y >= aux->y + aux->h);
+
+      if (!valid)
+      {
+        if (id == 0)
+          printf("\nInvalid coordinates, there's a rectangle in the desired area\n");
+        return EXIT_FAILURE;
+      }
+    }
+    aux = aux->next;
+  }
+  return EXIT_SUCCESS;
+}
+
+void Move_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
+{
   LRect *aux;
 
   aux = l_rect;
+
   while (aux)
   {
-    if (aux->id == id || (x >= aux->x + aux->l || x + l <= aux->x) ||
-        (y >= aux->y + aux->h || y + h <= aux->h))
-      aux = aux->next;
-    else
+    // Finding the rect that contains the right position.
+    if (s_coordinates->x >= aux->x && s_coordinates->x < aux->x + aux->l && s_coordinates->y >= aux->y && s_coordinates->y < aux->y + aux->h)
     {
-      if (id == 0)
-        printf("\nInvalid coordinates, theres a rectangle in the desired area\n");
-      return EXIT_FAILURE;
+      if (s_coordinates->command == 'r')
+      {
+        if (aux->x + aux->l + s_coordinates->p - 1 <= MAX_COL && Valid_action(l_rect, aux->x + s_coordinates->p, aux->y, aux->h, aux->y, aux->id) == EXIT_SUCCESS)
+          aux->x += s_coordinates->p;
+        else
+          printf("\nIt's not possible to move the rectangle %d, %d positions to the right\n", aux->id, s_coordinates->p);
+      }
+      else if (s_coordinates->command == 'l')
+      {
+        if (aux->x - s_coordinates->p > 0 && Valid_action(l_rect, aux->x - s_coordinates->p, aux->y, aux->h, aux->l, aux->id) == EXIT_SUCCESS)
+          aux->x -= s_coordinates->p;
+        else
+          printf("\nIt's not possible to move the rectangle %d, %d positions to the left\n", aux->id, s_coordinates->p);
+      }
+      return;
     }
+
+    aux = aux->next;
   }
 
-  return EXIT_SUCCESS;
+  printf("\nRectangle not found\n");
 }

@@ -177,7 +177,7 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
 
     // check if the sum of x and l - 1 is lower than 80, to respect the canvas boundary.
     valid_number = atoi(token);
-    if (valid_number <= 0)
+    if (valid_number < 2)
     {
       printf("\nInvalid, the \"l\" value must be a number greater than 0\n");
       return EXIT_FAILURE;
@@ -200,9 +200,9 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
     }
     // check if the sum of y and h - 1 is lower than 25, to respect the canvas boundary.
     valid_number = atoi(token);
-    if (valid_number <= 0)
+    if (valid_number < 2)
     {
-      printf("\nInvalid, the \"h\" value must be a number greater than 0\n");
+      printf("\nInvalid, the \"h\" value must be a number greater than 1\n");
       return EXIT_FAILURE;
     }
     else if ((valid_number + s_coordinates->y - 1) > 25)
