@@ -32,16 +32,21 @@ LRect *Add_rect(LRect *l_rect, SCoordinates *s_condinates)
   return l_rect;
 }
 
-LRect *Free_all_rect(LRect *l_rect)
+LRect *Free_rect(LRect *l_rect)
 {
   LRect *aux;
 
+  aux = l_rect->next;
+  free(l_rect);
+  l_rect = aux;
+
+  return l_rect;
+}
+
+LRect *Free_all_rect(LRect *l_rect)
+{
   while (l_rect)
-  {
-    aux = l_rect->next;
-    free(l_rect);
-    l_rect = aux;
-  }
+    l_rect = Free_rect(l_rect);
 
   return l_rect;
 }

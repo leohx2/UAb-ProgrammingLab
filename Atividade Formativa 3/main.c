@@ -30,6 +30,8 @@ int main()
           l_rect = Add_rect(l_rect, s_coordinates);
       }
     }
+    else if (s_coordinates->command == 'd')
+      l_rect = Delete_rectangle(l_rect, s_coordinates);
     else
       Move_rectangle(l_rect, s_coordinates);
     Update_rect(l_rect);

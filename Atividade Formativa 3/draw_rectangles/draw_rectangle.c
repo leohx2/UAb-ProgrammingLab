@@ -111,8 +111,8 @@ void Move_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
 
   while (aux)
   {
-    // Finding the rect that contains the right position.
-    if (s_coordinates->x >= aux->x && s_coordinates->x < aux->x + aux->l && s_coordinates->y >= aux->y && s_coordinates->y < aux->y + aux->h)
+    // Finding the rect that contains the provided position.
+    if (Is_there_a_rectangle(aux, s_coordinates) == EXIT_SUCCESS)
     {
       if (s_coordinates->command == 'r')
       {
@@ -135,4 +135,34 @@ void Move_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
   }
 
   printf("\nRectangle not found\n");
+}
+
+LRect *Delete_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
+{
+  LRect *aux;
+
+  // Checking if we need to delete the first created rectangle
+  if (Is_there_a_rectangle(l_rect, s_coordinates) == EXIT_SUCCESS)
+  {
+    l_rect = Free_rect(l_rect);
+
+    return l_rect;
+  }
+
+  // Checking the remaing positions
+  aux = l_rect;
+  while (aux->next)
+  {
+    // Finding the rect that contains the provided position.
+    if (Is_there_a_rectangle(aux->next, s_coordinates) == EXIT_SUCCESS)
+    {
+      printf("Entrei aqui\n");
+      aux->next = Free_rect(aux->next);
+      return l_rect;
+    }
+
+    aux = aux->next;
+  }
+  printf("\nRectangle not found\n");
+  return l_rect;
 }
