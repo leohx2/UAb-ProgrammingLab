@@ -58,6 +58,7 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "stdlib.h": "c",
-    "drawing.h": "c"
+    "drawing.h": "c",
+    "helper.h": "c"
   }
 }

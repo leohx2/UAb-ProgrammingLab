@@ -1,5 +1,6 @@
 #include "../headers/drawing.h"
 
+// Apply "Gravity" to the rectangle
 void Update_rect(LRect *l_rect)
 {
   LRect *aux;
@@ -13,6 +14,12 @@ void Update_rect(LRect *l_rect)
   }
 }
 
+/*
+Insert the rect into the matrix, there's 3 possible values:
+-1, to indicate there's a rect border, the rect ID and the rect ID + 10.
+
+The Draw_matrix function will know what to do with these values
+*/
 void Update_matrix(int m[MAX_LINES][MAX_COL], LRect *l_rect)
 {
   LRect *aux;
@@ -25,16 +32,32 @@ void Update_matrix(int m[MAX_LINES][MAX_COL], LRect *l_rect)
     {
       for (c = 0; c < aux->h; c++)
       {
+        // Rect borders
         if (i == 0 || aux->x + i == aux->x + aux->l - 1 || c == 0 || aux->y + c == aux->y + aux->h - 1)
           m[aux->y + c - 1][aux->x + i - 1] = -1;
         else
           m[aux->y + c - 1][aux->x + i - 1] = aux->id;
+
+        /* Checking the fist slot, to insert the rect ID instead a "+ ", but only if we have space to do so.
+        We are looking for the slot x+1, h-1, but only if there's the aux->id value, not a -1. If there's a -1
+        it means we don't have space, otherwise we'll increase the in value in 10.
+        */
+        if (m[aux->y + aux->h - 3][aux->x] == aux->id)
+          m[aux->y + aux->h - 3][aux->x] = aux->id + 10;
       }
     }
     aux = aux->next;
   }
 }
 
+/*
+The matrix contains 4 possible values:
+-2 -> To indicate there's no rect there
+-1 -> To indicate there's a rect border
+A number between 0 and 9 -> To indicate the ID, we'll print "+ " when finding that value
+A number between 10 and 19 -> Basically the ID + 10, the idea is to fill only the first rect
+space with that value, to indicate the Draw_matrix to print it's ID instead "X " or ". " or "+ ".
+*/
 void Draw_matrix(int m[MAX_LINES][MAX_COL])
 {
   int l, c;
@@ -46,6 +69,10 @@ void Draw_matrix(int m[MAX_LINES][MAX_COL])
     {
       if (m[l][c] == -1)
         printf("X ");
+      else if (m[l][c] >= 0 && m[l][c] <= 9)
+        printf("+ ");
+      else if (m[l][c] >= 10)
+        printf("%d ", m[l][c] - 10);
       else
         printf(". ");
     }

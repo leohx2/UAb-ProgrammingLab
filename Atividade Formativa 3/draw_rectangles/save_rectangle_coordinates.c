@@ -1,8 +1,7 @@
-#include "../headers/drawing.h"
+#include "../headers/commands.h"
 
 LRect *Add_rect(LRect *l_rect, SCoordinates *s_condinates)
 {
-  static int id = 1;
   LRect *new, *aux;
 
   new = (LRect *)malloc(sizeof(LRect));
@@ -17,7 +16,7 @@ LRect *Add_rect(LRect *l_rect, SCoordinates *s_condinates)
   new->l = s_condinates->l;
   new->x = s_condinates->x;
   new->y = s_condinates->y;
-  new->id = id++;
+  new->id = Random_id(l_rect);
 
   if (l_rect == NULL)
   {
