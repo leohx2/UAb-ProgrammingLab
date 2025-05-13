@@ -22,8 +22,13 @@ int main()
 
     if (s_coordinates->command == 'c')
     {
-      if (Valid_action(l_rect, s_coordinates->x, s_coordinates->y, s_coordinates->h, s_coordinates->l, 0) == EXIT_SUCCESS)
-        l_rect = Add_rect(l_rect, s_coordinates);
+      if (Rectangle_len(l_rect) == 10)
+        printf("\nLimit of 10 rectangles reached. To be able to create a new reactangle, please delete one (or more) rectangle(s)\n");
+      else
+      {
+        if (Valid_action(l_rect, s_coordinates->x, s_coordinates->y, s_coordinates->h, s_coordinates->l, 0) == EXIT_SUCCESS)
+          l_rect = Add_rect(l_rect, s_coordinates);
+      }
     }
     else
       Move_rectangle(l_rect, s_coordinates);
