@@ -25,11 +25,11 @@ int Read_commands(SCoordinates *s_coordinates)
   else if (strcmp("help", input) == 0)
   {
     printf("\nList of commands:\n");
-    printf("x,y >=1, x <= 80 and y <= 25\n");
-    printf("create x,y+l,h - Creates a rectangle where (x,y) are the coordinates of the bottom-left corner, and (l,h) are the length and height, respectively.\n");
-    printf("moveright x,y+p - Moves the rectangle located at coordinates (x,y) to the right by p positions.\n");
-    printf("moveleft x,y+p - Moves the rectangle containing the point (x,y) to the left by p positions.\n");
-    printf("exit\nhelp\n");
+    printf("(x,y >=1, x <= 80 and y <= 25)\n");
+    printf("-> create x,y+l,h - Creates a rectangle where (x,y) are the coordinates of the bottom-left corner, and (l,h) are the length and height, respectively.\n");
+    printf("-> moveright x,y+p - Moves the rectangle located at coordinates (x,y) to the right by p positions.\n");
+    printf("-> moveleft x,y+p - Moves the rectangle containing the point (x,y) to the left by p positions.\n");
+    printf("-> exit\n-> help\n");
     return (Read_commands(s_coordinates));
   }
   return 1;
@@ -53,7 +53,7 @@ int Command_verify(char *input, SCoordinates *s_coordinates)
   if (strcmp(token, "create") != 0 && strcmp(token, "moveright") != 0 && strcmp(token, "moveleft") != 0)
   {
     printf("\nInvalid input, heres a list of all valid commands\n");
-    printf("create x,y+l,h\nmoveright x,y+p\nmoveleft x,y+p\nexit\nhelp\n");
+    printf("-> create x,y+l,h\n-> moveright x,y+p\n-> moveleft x,y+p\n-> exit\n-> help\n");
     return EXIT_FAILURE;
   }
 
