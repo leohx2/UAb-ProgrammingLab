@@ -3,7 +3,7 @@
 int Command_verify(char *input, SCoordinates *s_coordinates);
 int Coordinates_verify(char *coordinates, SCoordinates *s_coordinates);
 int Verify_last_part(char *last_part, SCoordinates *s_coordinates);
-int Valid_amount_of_arguments(char *str);
+int Valid_amount_of_arguments(char *str, char command);
 
 int Read_commands(SCoordinates *s_coordinates)
 {
@@ -25,11 +25,7 @@ int Read_commands(SCoordinates *s_coordinates)
   else if (strcmp("help", input) == 0)
   {
     printf("\nList of commands:\n");
-    printf("(x,y >=1, x <= 80 and y <= 25)\n");
-    printf("-> create x,y+l,h - Creates a rectangle where (x,y) are the coordinates of the bottom-left corner, and (l,h) are the length and height, respectively.\n");
-    printf("-> moveright x,y+p - Moves the rectangle located at coordinates (x,y) to the right by p positions.\n");
-    printf("-> moveleft x,y+p - Moves the rectangle containing the point (x,y) to the left by p positions.\n");
-    printf("-> exit\n-> help\n");
+    Print_commands();
     return (Read_commands(s_coordinates));
   }
   return 1;
@@ -42,7 +38,7 @@ int Command_verify(char *input, SCoordinates *s_coordinates)
   if (input == NULL)
     return EXIT_FAILURE;
 
-  // Getting the fist part of the command, can be exit, help, create, moveleft or moveright
+  // Getting the fist part of the command, can be exit, help, create, moveleft, moveright or delete
   token = strtok(input, " ");
 
   // First case, exit or help.
@@ -50,20 +46,20 @@ int Command_verify(char *input, SCoordinates *s_coordinates)
     return EXIT_SUCCESS;
 
   // Verify command
-  if (strcmp(token, "create") != 0 && strcmp(token, "moveright") != 0 && strcmp(token, "moveleft") != 0)
+  if (strcmp(token, "create") != 0 && strcmp(token, "moveright") != 0 && strcmp(token, "moveleft") != 0 && strcmp(token, "delete") != 0)
   {
     printf("\nInvalid input, heres a list of all valid commands\n");
-    printf("-> create x,y+l,h\n-> moveright x,y+p\n-> moveleft x,y+p\n-> exit\n-> help\n");
+    Print_commands();
     return EXIT_FAILURE;
   }
 
   // Now we know that the command is right, let's see the instruction.
-  if (token[0] == 'c')
+  if (token[0] == 'c' || token[0] == 'd')
     s_coordinates->command = token[0];
   else
     s_coordinates->command = token[4];
 
-  // The 2nd part of our command can be "x,y+l,h" or "x,y+p"
+  // The 2nd part of our command can be "x,y+l,h", "x,y+p" or just "x,y" (for the delete case)
   token = strtok(NULL, " ");
 
   if (token == NULL)
@@ -73,24 +69,30 @@ int Command_verify(char *input, SCoordinates *s_coordinates)
   }
 
   strcpy(token_backup, token);
-  if (Valid_amount_of_arguments(token_backup) == EXIT_FAILURE)
+  if (Valid_amount_of_arguments(token_backup, s_coordinates->command) == EXIT_FAILURE)
     return EXIT_FAILURE;
 
-  // The strtok modify permantly the string, and we still need the "full" command to verify it's last part.
   // The token will change due the strtok on Coordinates_verify, erasing the 2nd part of it.
+  // The strtok modify permantly the string, and we still need the "full" command to verify it's last part.
   strcpy(token_backup, token);
 
-  // Check if there's more arguments than the necessary
-
+  // Check if there's more arguments than necessary
   if (token == NULL)
   {
-    printf("\nCommand invalid, missing coordinates\n");
+    printf("\nCommand invalid, more arguments than necessary\n");
     return EXIT_FAILURE;
   }
-  // the create and move instructions are different, create has 2 coordinates plus width and height, and moove has 2 coordinates and a position.
+
+  // The create and move instructions are different, create has 2 coordinates plus width and height, and moove has 2 coordinates and a position.
+  // but delete has no coordinates
   if (Coordinates_verify(token, s_coordinates) == EXIT_FAILURE)
     return EXIT_FAILURE;
-  return Verify_last_part(token_backup, s_coordinates);
+
+  // There's no need to verify the last part of command when deleting, because there is no "last part"
+  if (s_coordinates->command == 'd')
+    return EXIT_SUCCESS;
+  else
+    return Verify_last_part(token_backup, s_coordinates);
 }
 
 int Coordinates_verify(char *coordinates, SCoordinates *s_coordinates)
@@ -135,7 +137,7 @@ int Coordinates_verify(char *coordinates, SCoordinates *s_coordinates)
   x_and_y = strtok(NULL, ",");
   if (x_and_y != NULL)
   {
-    printf("\nInvalid coordinate format, more elements than the necessary (only x, y and p or l and h)\n");
+    printf("\nInvalid coordinate format, more elements than the necessary\n");
     return EXIT_FAILURE;
   }
 
@@ -227,7 +229,8 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
   return EXIT_SUCCESS;
 }
 
-int Valid_amount_of_arguments(char *str)
+// The delete command has only the coordinates, no + signal.
+int Valid_amount_of_arguments(char *str, char command)
 {
   int i = 0;
 
@@ -237,9 +240,10 @@ int Valid_amount_of_arguments(char *str)
     str = strtok(NULL, "+");
     i++;
   }
-  if (i == 2)
+
+  if (command == 'd' && i == 1 || command != 'd' && i == 2)
     return EXIT_SUCCESS;
 
-  printf("\nInvalid number of arguments between the \"+\" signal\n");
+  printf("\nInvalid number of \"+\" signals\n");
   return EXIT_FAILURE;
 }

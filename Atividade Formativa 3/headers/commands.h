@@ -7,7 +7,6 @@
 int Read_commands(SCoordinates *s_coordinates);
 int Random_id(LRect *l_rect);
 LRect *Add_rect(LRect *l_rect, SCoordinates *s_condinates);
-LRect *Free_all_rect(LRect *l_rect);
 void Move_rectangle(LRect *l_rect, SCoordinates *s_coordinates);
 int Rectangle_len(LRect *l_rect);
 

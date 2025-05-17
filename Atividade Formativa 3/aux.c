@@ -72,3 +72,21 @@ int Rectangle_len(LRect *l_rect)
 
   return size;
 }
+
+void Print_commands()
+{
+  printf("(x,y >=1, x <= 80 and y <= 25)\n");
+  printf("-> create x,y+l,h - Creates a rectangle where (x,y) are the coordinates of the bottom-left corner, and (l,h) are the length and height, respectively.\n");
+  printf("-> moveright x,y+p - Moves the rectangle located at coordinates (x,y) to the right by p positions.\n");
+  printf("-> moveleft x,y+p - Moves the rectangle containing the point (x,y) to the left by p positions.\n");
+  printf("-> delete x,y - Delete the rectangle containning the point (x,y).\n");
+  printf("-> exit\n-> help\n");
+}
+
+int Is_there_a_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
+{
+  if (s_coordinates->x >= l_rect->x && s_coordinates->x < l_rect->x + l_rect->l && s_coordinates->y >= l_rect->y && s_coordinates->y < l_rect->y + l_rect->h)
+    return EXIT_SUCCESS;
+  else
+    return EXIT_FAILURE;
+}
