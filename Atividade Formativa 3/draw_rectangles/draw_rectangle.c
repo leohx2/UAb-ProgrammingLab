@@ -116,7 +116,7 @@ void Move_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
     {
       if (s_coordinates->command == 'r')
       {
-        if (aux->x + aux->l + s_coordinates->p - 1 <= MAX_COL && Valid_action(l_rect, aux->x + s_coordinates->p, aux->y, aux->h, aux->y, aux->id) == EXIT_SUCCESS)
+        if (aux->x + aux->l + s_coordinates->p - 1 <= MAX_COL && Valid_action(l_rect, aux->x + s_coordinates->p, aux->y, aux->h, aux->l, aux->id) == EXIT_SUCCESS)
           aux->x += s_coordinates->p;
         else
           printf("\nIt's not possible to move the rectangle %d, %d positions to the right\n", aux->id, s_coordinates->p);

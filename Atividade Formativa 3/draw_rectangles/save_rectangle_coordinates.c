@@ -18,18 +18,8 @@ LRect *Add_rect(LRect *l_rect, SCoordinates *s_condinates)
   new->y = s_condinates->y;
   new->id = Random_id(l_rect);
 
-  if (l_rect == NULL)
-  {
-    new->next = l_rect;
-    return new;
-  }
-
-  aux = l_rect;
-  while (aux && aux->next)
-    aux = aux->next;
-  new->next = NULL;
-  aux->next = new;
-  return l_rect;
+  new->next = l_rect;
+  return new;
 }
 
 LRect *Free_rect(LRect *l_rect)

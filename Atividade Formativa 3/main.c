@@ -27,7 +27,10 @@ int main()
       else
       {
         if (Valid_action(l_rect, s_coordinates->x, s_coordinates->y, s_coordinates->h, s_coordinates->l, 0) == EXIT_SUCCESS)
+        {
           l_rect = Add_rect(l_rect, s_coordinates);
+          Collision_detection(l_rect, l_rect);
+        }
       }
     }
     else if (s_coordinates->command == 'd')

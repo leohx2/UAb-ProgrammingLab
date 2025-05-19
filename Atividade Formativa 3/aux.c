@@ -90,3 +90,67 @@ int Is_there_a_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
   else
     return EXIT_FAILURE;
 }
+
+/* We have already the "Valid_action" function which checks if it's possible to move the rect
+  in a certain direction. We can reuse it here, if there's a collision it means the rectangle can't
+  go even left or right a single "step".
+  We're only counting side collisions.
+*/
+void Collision_detection(LRect *all_rectangles, LRect *current_rectangle)
+{
+  LRect *aux;
+  SCoordinates *s_coordinates_1, *s_coordinates_2;
+
+  s_coordinates_1 = NULL;
+  s_coordinates_2 = NULL;
+
+  // Check if there's a rectangle on the right
+  if (Valid_action(current_rectangle, current_rectangle->x + 1, current_rectangle->y, current_rectangle->h, current_rectangle->l, current_rectangle->id) == EXIT_FAILURE)
+  {
+    s_coordinates_1 = (SCoordinates *)malloc(sizeof(SCoordinates));
+    if (s_coordinates_1 == NULL)
+    {
+      printf("Error, insuficient memory (coordinate)");
+      return;
+    }
+    s_coordinates_1->h = current_rectangle->h;
+    s_coordinates_1->l = current_rectangle->l;
+    s_coordinates_1->x = current_rectangle->x + current_rectangle->l + 1;
+    s_coordinates_1->y = current_rectangle->y;
+    printf("\n\nCoordenadas: x -> %d, l -> %d, y -> %d, h -> %d\n\n", s_coordinates_1->x, s_coordinates_1->l, s_coordinates_1->y, s_coordinates_1->h);
+  }
+
+  // Check if there's a rectangle on the left
+  if (Valid_action(current_rectangle, current_rectangle->x - 1, current_rectangle->y, current_rectangle->h, current_rectangle->l, current_rectangle->id) == EXIT_FAILURE)
+  {
+    s_coordinates_2 = (SCoordinates *)malloc(sizeof(SCoordinates));
+    if (s_coordinates_2 == NULL)
+    {
+      printf("Error, insuficient memory (coordinate)");
+      return;
+    }
+    s_coordinates_2->h = current_rectangle->h;
+    s_coordinates_2->l = current_rectangle->l;
+    s_coordinates_2->x = current_rectangle->x - 1;
+    s_coordinates_2->y = current_rectangle->y;
+  }
+
+  aux = all_rectangles;
+
+  while (aux)
+  {
+    if (aux->id != current_rectangle->id)
+    {
+      if (s_coordinates_1 != NULL && Is_there_a_rectangle(aux, s_coordinates_1) == EXIT_SUCCESS)
+        printf("-> Warning, the rectangle %d is colliding with the %d on the right\n", current_rectangle->id, aux->id);
+      if (s_coordinates_2 != NULL && Is_there_a_rectangle(aux, s_coordinates_2) == EXIT_SUCCESS)
+        printf("-> Warning, the rectangle %d is colliding with the %d on the left\n", current_rectangle->id, aux->id);
+    }
+    aux = aux->next;
+  }
+
+  if (s_coordinates_1)
+    free(s_coordinates_1);
+  if (s_coordinates_2)
+    free(s_coordinates_2);
+}
