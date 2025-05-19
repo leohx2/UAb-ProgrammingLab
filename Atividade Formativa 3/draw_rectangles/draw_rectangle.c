@@ -1,17 +1,30 @@
 #include "../headers/drawing.h"
 
 // Apply "Gravity" to the rectangle
-void Update_rect(LRect *l_rect)
+int Update_rect(LRect *l_rect)
 {
   LRect *aux;
+  int update_counting = 0;
 
   aux = l_rect;
   while (aux)
   {
     while (aux->y > 1 && Valid_action(l_rect, aux->x, aux->y - 1, aux->h, aux->l, aux->id) == EXIT_SUCCESS)
+    {
       aux->y -= 1;
+      Collision_warning(l_rect, aux);
+      update_counting++;
+    }
+
     aux = aux->next;
   }
+
+  // This will prevent error in gravity when deleting or moving rect that came later on the linked list
+  // Without this recursion when the a rect falls all the previous rectangles (in the linked list) above it won't fall.
+  if (update_counting > 0)
+    return Update_rect(l_rect);
+
+  return update_counting;
 }
 
 /*
@@ -79,7 +92,7 @@ void Draw_matrix(int m[MAX_LINES][MAX_COL])
   }
 }
 
-// When creating id must be 0.
+// When creating id must be -10.
 int Valid_action(LRect *l_rect, int x, int y, int h, int l, int id)
 {
   LRect *aux = l_rect;
@@ -93,7 +106,7 @@ int Valid_action(LRect *l_rect, int x, int y, int h, int l, int id)
 
       if (!valid)
       {
-        if (id == 0)
+        if (id == -10)
           printf("\nInvalid coordinates, there's a rectangle in the desired area\n");
         return EXIT_FAILURE;
       }
@@ -112,19 +125,25 @@ void Move_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
   while (aux)
   {
     // Finding the rect that contains the provided position.
-    if (Is_there_a_rectangle(aux, s_coordinates) == EXIT_SUCCESS)
+    if (Is_there_a_rectangle(aux, s_coordinates, 0) == EXIT_SUCCESS)
     {
       if (s_coordinates->command == 'r')
       {
-        if (aux->x + aux->l + s_coordinates->p - 1 <= MAX_COL && Valid_action(l_rect, aux->x + s_coordinates->p, aux->y, aux->h, aux->y, aux->id) == EXIT_SUCCESS)
+        if (aux->x + aux->l + s_coordinates->p - 1 <= MAX_COL && Valid_action(l_rect, aux->x + s_coordinates->p, aux->y, aux->h, aux->l, aux->id) == EXIT_SUCCESS)
+        {
           aux->x += s_coordinates->p;
+          Collision_warning(l_rect, aux);
+        }
         else
           printf("\nIt's not possible to move the rectangle %d, %d positions to the right\n", aux->id, s_coordinates->p);
       }
       else if (s_coordinates->command == 'l')
       {
         if (aux->x - s_coordinates->p > 0 && Valid_action(l_rect, aux->x - s_coordinates->p, aux->y, aux->h, aux->l, aux->id) == EXIT_SUCCESS)
+        {
           aux->x -= s_coordinates->p;
+          Collision_warning(l_rect, aux);
+        }
         else
           printf("\nIt's not possible to move the rectangle %d, %d positions to the left\n", aux->id, s_coordinates->p);
       }
@@ -142,7 +161,7 @@ LRect *Delete_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
   LRect *aux;
 
   // Checking if we need to delete the first created rectangle
-  if (Is_there_a_rectangle(l_rect, s_coordinates) == EXIT_SUCCESS)
+  if (Is_there_a_rectangle(l_rect, s_coordinates, 0) == EXIT_SUCCESS)
   {
     l_rect = Free_rect(l_rect);
 
@@ -154,9 +173,8 @@ LRect *Delete_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
   while (aux->next)
   {
     // Finding the rect that contains the provided position.
-    if (Is_there_a_rectangle(aux->next, s_coordinates) == EXIT_SUCCESS)
+    if (Is_there_a_rectangle(aux->next, s_coordinates, 0) == EXIT_SUCCESS)
     {
-      printf("Entrei aqui\n");
       aux->next = Free_rect(aux->next);
       return l_rect;
     }

@@ -9,13 +9,13 @@ int Read_commands(SCoordinates *s_coordinates)
 {
   char input[50];
 
-  printf("\nYour command (or \"exit\" to leave and \"help\" for a user manual): ");
+  printf("\n\nYour command (or \"exit\" to leave and \"help\" for a user manual): ");
   Get_str_input(input);
   Str_to_lower(input);
 
   while (Command_verify(input, s_coordinates) == EXIT_FAILURE)
   {
-    printf("\nYour command (or \"exit\" to leave and \"help\" for a user manual): ");
+    printf("\n\nYour command (or \"exit\" to leave and \"help\" for a user manual): ");
     Get_str_input(input);
     Str_to_lower(input);
   }
