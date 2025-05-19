@@ -83,9 +83,23 @@ void Print_commands()
   printf("-> exit\n-> help\n");
 }
 
-int Is_there_a_rectangle(LRect *l_rect, SCoordinates *s_coordinates)
+// mode 0: receive only x and y.
+// mode 1: receive all the coordiantes x,y,l and h
+int Is_there_a_rectangle(LRect *l_rect, SCoordinates *s_coordinates, int mode)
 {
-  if (s_coordinates->x >= l_rect->x && s_coordinates->x < l_rect->x + l_rect->l && s_coordinates->y >= l_rect->y && s_coordinates->y < l_rect->y + l_rect->h)
+
+  int dont_exist;
+
+  if (mode == 0)
+  {
+    if (s_coordinates->x >= l_rect->x && s_coordinates->x < l_rect->x + l_rect->l && s_coordinates->y >= l_rect->y && s_coordinates->y < l_rect->y + l_rect->h)
+      return EXIT_SUCCESS;
+    else
+      return EXIT_FAILURE;
+  }
+
+  dont_exist = (s_coordinates->x + s_coordinates->l <= l_rect->x) || (s_coordinates->x >= l_rect->x + l_rect->l) || (s_coordinates->y + s_coordinates->h <= l_rect->y) || (s_coordinates->y >= l_rect->y + l_rect->h);
+  if (!dont_exist)
     return EXIT_SUCCESS;
   else
     return EXIT_FAILURE;
@@ -105,28 +119,27 @@ void Collision_detection(LRect *all_rectangles, LRect *current_rectangle)
   s_coordinates_2 = NULL;
 
   // Check if there's a rectangle on the right
-  if (Valid_action(current_rectangle, current_rectangle->x + 1, current_rectangle->y, current_rectangle->h, current_rectangle->l, current_rectangle->id) == EXIT_FAILURE)
+  if (Valid_action(all_rectangles, current_rectangle->x + 1, current_rectangle->y, current_rectangle->h, current_rectangle->l, current_rectangle->id) == EXIT_FAILURE)
   {
     s_coordinates_1 = (SCoordinates *)malloc(sizeof(SCoordinates));
     if (s_coordinates_1 == NULL)
     {
-      printf("Error, insuficient memory (coordinate)");
+      printf("Error, insuficient memory (collision_dection1)");
       return;
     }
     s_coordinates_1->h = current_rectangle->h;
     s_coordinates_1->l = current_rectangle->l;
-    s_coordinates_1->x = current_rectangle->x + current_rectangle->l + 1;
+    s_coordinates_1->x = current_rectangle->x + 1;
     s_coordinates_1->y = current_rectangle->y;
-    printf("\n\nCoordenadas: x -> %d, l -> %d, y -> %d, h -> %d\n\n", s_coordinates_1->x, s_coordinates_1->l, s_coordinates_1->y, s_coordinates_1->h);
   }
 
   // Check if there's a rectangle on the left
-  if (Valid_action(current_rectangle, current_rectangle->x - 1, current_rectangle->y, current_rectangle->h, current_rectangle->l, current_rectangle->id) == EXIT_FAILURE)
+  if (Valid_action(all_rectangles, current_rectangle->x - 1, current_rectangle->y, current_rectangle->h, current_rectangle->l, current_rectangle->id) == EXIT_FAILURE)
   {
     s_coordinates_2 = (SCoordinates *)malloc(sizeof(SCoordinates));
     if (s_coordinates_2 == NULL)
     {
-      printf("Error, insuficient memory (coordinate)");
+      printf("Error, insuficient memory (collision_dection2)");
       return;
     }
     s_coordinates_2->h = current_rectangle->h;
@@ -141,10 +154,10 @@ void Collision_detection(LRect *all_rectangles, LRect *current_rectangle)
   {
     if (aux->id != current_rectangle->id)
     {
-      if (s_coordinates_1 != NULL && Is_there_a_rectangle(aux, s_coordinates_1) == EXIT_SUCCESS)
-        printf("-> Warning, the rectangle %d is colliding with the %d on the right\n", current_rectangle->id, aux->id);
-      if (s_coordinates_2 != NULL && Is_there_a_rectangle(aux, s_coordinates_2) == EXIT_SUCCESS)
-        printf("-> Warning, the rectangle %d is colliding with the %d on the left\n", current_rectangle->id, aux->id);
+      if (s_coordinates_1 != NULL && Is_there_a_rectangle(aux, s_coordinates_1, 1) == EXIT_SUCCESS)
+        printf("-> Warning, the rectangle %d is now colliding with the %d on the right\n", current_rectangle->id, aux->id);
+      if (s_coordinates_2 != NULL && Is_there_a_rectangle(aux, s_coordinates_2, 1) == EXIT_SUCCESS)
+        printf("-> Warning, the rectangle %d is now colliding with the %d on the left\n", current_rectangle->id, aux->id);
     }
     aux = aux->next;
   }
@@ -153,4 +166,28 @@ void Collision_detection(LRect *all_rectangles, LRect *current_rectangle)
     free(s_coordinates_1);
   if (s_coordinates_2)
     free(s_coordinates_2);
+}
+
+// We don't want the collision detection system to be called if the "gravity" can act on it,
+// in that case, we check if the rect is already on the bottom or on the top of another.
+void Collision_warning(LRect *all_rect, LRect *current_rect)
+{
+  SCoordinates *s_coordinates;
+
+  s_coordinates = (SCoordinates *)malloc(sizeof(SCoordinates));
+  if (s_coordinates == NULL)
+  {
+    printf("Error, insuficient memory (coordinate collision_warning)");
+    return;
+  }
+
+  s_coordinates->h = current_rect->h;
+  s_coordinates->l = current_rect->l;
+  s_coordinates->x = current_rect->x;
+  s_coordinates->y = current_rect->y - 1;
+
+  if (current_rect->y == 1 || Valid_action(all_rect, current_rect->x, current_rect->y - 1, current_rect->h, current_rect->l, current_rect->id) == EXIT_FAILURE)
+    Collision_detection(all_rect, current_rect);
+
+  free(s_coordinates);
 }

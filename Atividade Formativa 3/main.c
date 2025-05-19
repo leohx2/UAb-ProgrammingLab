@@ -26,10 +26,10 @@ int main()
         printf("\nLimit of 10 rectangles reached. To be able to create a new reactangle, please delete one (or more) rectangle(s)\n");
       else
       {
-        if (Valid_action(l_rect, s_coordinates->x, s_coordinates->y, s_coordinates->h, s_coordinates->l, 0) == EXIT_SUCCESS)
+        if (Valid_action(l_rect, s_coordinates->x, s_coordinates->y, s_coordinates->h, s_coordinates->l, -10) == EXIT_SUCCESS)
         {
           l_rect = Add_rect(l_rect, s_coordinates);
-          Collision_detection(l_rect, l_rect);
+          Collision_warning(l_rect, l_rect);
         }
       }
     }
