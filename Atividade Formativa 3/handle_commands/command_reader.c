@@ -1,6 +1,6 @@
 #include "../headers/helper.h"
+#include "../headers/commands.h"
 
-int Command_verify(char *input, SCoordinates *s_coordinates);
 int Coordinates_verify(char *coordinates, SCoordinates *s_coordinates);
 int Verify_last_part(char *last_part, SCoordinates *s_coordinates);
 int Valid_amount_of_arguments(char *str, char command);
@@ -186,7 +186,7 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
     }
     else if ((valid_number + s_coordinates->x - 1) > 80)
     {
-      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of x and l must be lower than 80\n");
+      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of x and l - 1 must be lower than 81\n");
       return EXIT_FAILURE;
     }
     else
@@ -209,7 +209,7 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
     }
     else if ((valid_number + s_coordinates->y - 1) > 25)
     {
-      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of y and h must be lower than 25\n");
+      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of y and h - 1 must be lower than 26\n");
       return EXIT_FAILURE;
     }
     else
