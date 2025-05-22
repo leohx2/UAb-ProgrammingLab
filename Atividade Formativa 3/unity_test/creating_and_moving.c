@@ -30,7 +30,7 @@ int main()
   }
 
   printf("\n------------------------------------------------------------------------------------------\n");
-  printf("\nStarting tests, you will se the output from every function, don't worry about that part\n");
+  printf("\nStarting tests, here you will se the output from every function and after that, the result\n");
   printf("\n------------------------------------------------------------------------------------------\n");
   test1 = Max_rectangles(s_coordinates, matrix);
   test2 = Outside_boundaries(s_coordinates);
@@ -109,7 +109,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   int good_to_go = EXIT_SUCCESS;
   char *input;
 
-  printf("\n2nd Test, checking the \"world\" limits and sizes\n");
+  printf("\n\n2nd Test, checking the \"world\" limits and sizes\n");
   input = (char *)malloc(sizeof(char) * 18);
   if (input == NULL)
   {
@@ -118,6 +118,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   }
 
   // A x lower than 1
+  printf("\nx is lower than 1:");
   strcpy(input, "create -1,1+3,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
@@ -126,6 +127,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   }
 
   // A x greater than 80
+  printf("\nx is greater than 80:");
   strcpy(input, "create 81,1+3,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
@@ -134,6 +136,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   }
 
   // A y lower than 1
+  printf("\ny is lower than 1:");
   strcpy(input, "create 1,-1+3,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
@@ -142,6 +145,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   }
 
   // A y greater than 25
+  printf("\nx is greater than 25:");
   strcpy(input, "create 1,26+3,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
@@ -150,6 +154,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   }
 
   // Incorret height and length, should be greater than 2
+  printf("\nIncorret height and length, should be greater than 2:");
   strcpy(input, "create 1,1+1,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
@@ -165,6 +170,7 @@ int Outside_boundaries(SCoordinates *s_coordinates)
   }
 
   // Checking if the user can create a rectangle with valid x and y values but h, l or h and l invalid
+  printf("\nValid x and y values but h, l or h and l invalid(s):");
   strcpy(input, "create 76,1+6,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
@@ -172,14 +178,14 @@ int Outside_boundaries(SCoordinates *s_coordinates)
     good_to_go = EXIT_FAILURE;
   }
 
-  strcpy(input, "create 1,26+5,5");
+  strcpy(input, "create 1,22+5,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
     printf("\nError, creating a rectangle with an invalid size, invalid height\n");
     good_to_go = EXIT_FAILURE;
   }
 
-  strcpy(input, "create 76,26+5,5");
+  strcpy(input, "create 76,22+6,5");
   if (Command_verify(input, s_coordinates) == EXIT_SUCCESS)
   {
     printf("\nError, creating a rectangle with an invalid size, invalid height and length\n");

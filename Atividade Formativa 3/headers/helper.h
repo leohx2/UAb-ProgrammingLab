@@ -30,8 +30,8 @@ void Str_to_lower(char *s);
 void Get_str_input(char *input);
 void Initialize_matrix(int m[MAX_LINES][MAX_COL]);
 void Print_commands();
-void Collision_detection(LRect *all_rectangles, LRect *current_rectangle);
+int Collision_detection(LRect *all_rectangles, LRect *current_rectangle);
 int Is_there_a_rectangle(LRect *l_rect, SCoordinates *s_coordinates, int mode);
-void Collision_warning(LRect *all_rect, LRect *current_rect);
+int Collision_warning(LRect *all_rect, LRect *current_rect);
 
 #endif
