@@ -248,7 +248,7 @@ int Valid_amount_of_arguments(char *str, char command)
     i++;
   }
 
-  if (command == 'd' && i == 1 || command != 'd' && i == 2)
+  if ((command == 'd' && i == 1) || (command != 'd' && i == 2))
     return EXIT_SUCCESS;
 
   printf("\nInvalid number of \"+\" signals\n");

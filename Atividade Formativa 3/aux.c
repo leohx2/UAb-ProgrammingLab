@@ -33,7 +33,6 @@ void Initialize_matrix(int m[MAX_LINES][MAX_COL])
 int Random_id(LRect *l_rect)
 {
   LRect *aux;
-  int id_limit = 10;
   int id;
 
   srand(time(NULL));

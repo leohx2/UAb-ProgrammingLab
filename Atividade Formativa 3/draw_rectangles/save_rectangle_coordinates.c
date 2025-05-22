@@ -2,7 +2,7 @@
 
 LRect *Add_rect(LRect *l_rect, SCoordinates *s_condinates)
 {
-  LRect *new, *aux;
+  LRect *new;
 
   new = (LRect *)malloc(sizeof(LRect));
 

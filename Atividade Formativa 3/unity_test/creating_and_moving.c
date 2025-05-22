@@ -247,7 +247,6 @@ int Rectangle_areas(SCoordinates *s_coordinates, int matrix[MAX_LINES][MAX_COL])
 int Moving_rectangle(SCoordinates *s_coordinates, int matrix[MAX_LINES][MAX_COL])
 {
   LRect *l_rect, *aux;
-  int id_1, id_2;
   int good_to_go = EXIT_SUCCESS;
 
   l_rect = NULL;

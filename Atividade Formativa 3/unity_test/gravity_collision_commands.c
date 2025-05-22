@@ -148,10 +148,11 @@ int Stacking_rectangles(SCoordinates *s_coordinates, int matrix[MAX_LINES][MAX_C
 // Here we'll try a few
 int Wrong_command(SCoordinates *s_coordinates, int matrix[MAX_LINES][MAX_COL])
 {
-  LRect *l_rect, *aux;
+  LRect *l_rect;
   char *input;
   int good_to_go = EXIT_SUCCESS;
 
+  l_rect = NULL;
   printf("\n\n3rd Test, testing wrong commands:\n");
 
   input = (char *)malloc(sizeof(char) * 20);
@@ -282,11 +283,10 @@ int Wrong_command(SCoordinates *s_coordinates, int matrix[MAX_LINES][MAX_COL])
 int Collision_test(SCoordinates *s_coordinates, int matrix[MAX_LINES][MAX_COL])
 {
   LRect *l_rect;
-  int i, collisions = 0, good_to_go = EXIT_SUCCESS;
+  int i, collisions = 0;
   int x[5] = {1, 1, 11, 11, 6};
   int y[5] = {1, 4, 1, 4, 1};
   int h[5] = {3, 3, 3, 3, 6};
-  int l[5] = {5, 5, 5, 5, 5};
 
   l_rect = NULL;
   printf("\n\n4th Test, collisions:\n");
