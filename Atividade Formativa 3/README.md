@@ -20,9 +20,9 @@ x86_64-w64-mingw32-gcc gravity_collision_commands.c ../aux.c ../draw_rectangles/
 
 ##### For Macbook:
 ```bash
-gcc main.c handle_commands/command_reader.c draw_rectangles/draw_rectangle.c draw_rectangles/save_rectangle_coordinates.c aux.c -o AF3
+gcc main.c handle_commands/command_reader.c draw_rectangles/draw_rectangle.c draw_rectangles/save_rectangle_coordinates.c aux.c -o MAC_AF3
 ```
 ##### For Windows:
 ```bash
-x86_64-w64-mingw32-gcc main.c handle_commands/command_reader.c draw_rectangles/draw_rectangle.c draw_rectangles/save_rectangle_coordinates.c aux.c -o AF3.exe
+x86_64-w64-mingw32-gcc main.c handle_commands/command_reader.c draw_rectangles/draw_rectangle.c draw_rectangles/save_rectangle_coordinates.c aux.c -o WIN_AF3.exe
 ```
