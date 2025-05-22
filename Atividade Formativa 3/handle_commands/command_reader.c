@@ -1,6 +1,6 @@
 #include "../headers/helper.h"
+#include "../headers/commands.h"
 
-int Command_verify(char *input, SCoordinates *s_coordinates);
 int Coordinates_verify(char *coordinates, SCoordinates *s_coordinates);
 int Verify_last_part(char *last_part, SCoordinates *s_coordinates);
 int Valid_amount_of_arguments(char *str, char command);
@@ -171,6 +171,13 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
     s_coordinates->p = valid_number;
     s_coordinates->l = 0; //
     s_coordinates->h = 0;
+
+    // token must contain only the p value, nothing else, so the its length must be 1 or 2. 1 if p < 10 and 2 if p is > 10;
+    if ((valid_number < 10 && strlen(token) > 1) || (valid_number > 10 && strlen(token) > 2))
+    {
+      printf("\nInvalid, more arguments than the necessary. When creating please insert only \"x,y+l,h\", when moving, only \"x,y+p\"\n");
+      return EXIT_FAILURE;
+    }
   }
   else
   {
@@ -181,12 +188,12 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
     valid_number = atoi(token);
     if (valid_number < 2)
     {
-      printf("\nInvalid, the \"l\" value must be a number greater than 0\n");
+      printf("\nInvalid, the \"l\" value must be a number greater than 1\n");
       return EXIT_FAILURE;
     }
     else if ((valid_number + s_coordinates->x - 1) > 80)
     {
-      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of x and l must be lower than 80\n");
+      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of x and l - 1 must be lower than 81\n");
       return EXIT_FAILURE;
     }
     else
@@ -209,7 +216,7 @@ int Verify_last_part(char *last_part, SCoordinates *s_coordinates)
     }
     else if ((valid_number + s_coordinates->y - 1) > 25)
     {
-      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of y and h must be lower than 25\n");
+      printf("\nInvalid, rectangle is bigger than the allowed. Notice that the sum of y and h - 1 must be lower than 26\n");
       return EXIT_FAILURE;
     }
     else

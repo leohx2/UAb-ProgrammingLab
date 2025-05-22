@@ -59,6 +59,7 @@
   "files.associations": {
     "stdlib.h": "c",
     "drawing.h": "c",
-    "helper.h": "c"
+    "helper.h": "c",
+    "commands.h": "c"
   }
 }
